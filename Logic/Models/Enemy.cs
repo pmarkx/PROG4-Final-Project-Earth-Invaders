@@ -15,7 +15,7 @@ namespace Logic.Models
         public override void Tick()
         {
             XPosition--;
-            if (Life>=0)
+            if (Life<=0)
             {
                 IsLive = false;
             }
