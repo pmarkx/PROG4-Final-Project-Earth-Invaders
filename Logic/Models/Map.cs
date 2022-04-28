@@ -1,0 +1,97 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Logic.Models
+{
+    class Map : IEnumerable<GameObject>
+    {
+        public Map(int indexX,int indexY)
+        {
+            MapArray = new GameObject[indexX, indexY];
+        }
+
+        private GameObject[,] MapArray { get; set; }
+
+        public IEnumerator<GameObject> GetEnumerator()
+        {
+            for (int i = 0; i < MapArray.GetLength(0); i++)
+            {
+                for (int j = 0; j < MapArray.GetLength(1); j++)
+                {
+                    yield return MapArray[i,j];
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public GameObject this[int index1, int index2]
+        {
+            get
+            {
+                return MapArray[index1, index2];
+            }
+            set
+            {
+                MapArray[index1, index2] = value;
+            }
+        }
+
+        public int GetLength(int dimension)
+        {
+            return MapArray.GetLength(dimension);
+        }
+
+        public (int X, int Y) IndexOf(Func<GameObject,bool> condition)
+        {
+            for (int i = 0; i < GetLength(0); i++)
+            {
+                for (int j = 0; j < GetLength(1); j++)
+                {
+                    if (condition(this[i,j]))
+                    {
+                        return (i, j);
+                    }
+                }
+            }
+            return (-1, -1);
+        }
+
+        public void PopulateMapFromStreamReader(StreamReader streamReader,Player thePlayer)
+        {
+            if (!streamReader.EndOfStream)
+            {
+                for (int i = 0; i < GetLength(0); i++)
+                {
+                    string line = streamReader.ReadLine();
+                    for (int j = 0; j < GetLength(1); j++)
+                    {
+                        switch (line[j])
+                        {
+                            case 'F':
+                                this[i, j] = new Floor(i, j);
+                                break;
+                            case 'M':
+                                this[i, j] = new Mine(i, j);
+                                break;
+                            case 'W':
+                                this[i, j] = new Wall(i, j);
+                                break;
+                            case 'E':
+                                this[i, j] = new Enemy(i, j);
+                                break;
+                            case 'P':
+                                this[i, j] = thePlayer;
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

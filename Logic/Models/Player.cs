@@ -10,8 +10,8 @@ namespace Logic.Models
     {
         public Player(int xPosition, int yPosition, int life = 1, int ammo = 0) : base(xPosition, yPosition, "P", life, true, ammo)
         {
-            IsSolid = true;
         }
+
         public override void Tick()
         {
             

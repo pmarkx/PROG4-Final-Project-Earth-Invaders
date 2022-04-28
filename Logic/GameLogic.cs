@@ -11,7 +11,7 @@ namespace Logic
 {
     public class GameLogic
     {
-        static public Player ThePlayer = new Player(0, 0, 3, 0);
+        public static Player ThePlayer = new Player(0, 0, 3, 0);
         public enum Directions
         {
             up, down
@@ -28,69 +28,38 @@ namespace Logic
                     break;
             }
         }
-        GameObject[,] Map { get; set; }
+        Map Map { get; set; }
         public GameLogic()
         {
-            StreamReader streamReader = new StreamReader("map.txt");
-            string[] Mapsize = streamReader.ReadLine().Split(",");
-            Map=new GameObject[int.Parse(Mapsize[0]),int.Parse(Mapsize[1])];
-
-            if (!streamReader.EndOfStream)
+            //Ezt a részt át lehetne vinni a Mapba de nem voltam biztos hogy szeretnétek.
+            using StreamReader streamReader = new StreamReader("map.txt");
+            var (MapsizeX, MapsizeY) = streamReader.ReadLine().Split(",") switch
             {
-                for (int i = 0; i < Map.GetLength(0); i++)
-                {
-                    string help=streamReader.ReadLine();
-                    for (int j = 0; j < Map.GetLength(1); j++)
-                    {
-                        switch (help[j])
-                        {
-                            case 'F':
-                                Map[i, j] = new Floor(i, j);
-                                break;
-                            case 'M':
-                                Map[i, j] = new Mine(i, j);
-                                break;
-                            case 'W':
-                                Map[i, j] = new Wall(i, j);
-                                break;
-                            case 'E':
-                                Map[i, j] = new Enemy(i, j);
-                                break;
-                            case 'P':
-                                Map[i, j] = ThePlayer;
-                                break;
-
-                        }
-                    }
-                }
-            }
-            streamReader.Close();
+                var a => (int.Parse(a[0]), int.Parse(a[1])),
+            };
+            Map = new Map(MapsizeX, MapsizeY);
+            Map.PopulateMapFromStreamReader(streamReader, ThePlayer);
         }
-        private int[] WhereAmI()
+
+        private (int X, int Y) WhereAmI()
         {
-            for (int i = 0; i < Map.GetLength(0); i++)
-            {
-                for (int j = 0; j < Map.GetLength(1); j++)
-                {
-                    if (Map[i, j] is Player)
-                    {
-                        return new int[] { i, j };
-                    }
-                }
-            }
-            return new int[] { -1, -1 };
+            Map.IndexOf(x => x is Player);
+            return (-1, -1);
         }
-        public void Move(Directions direction)
+
+        public void GameTick()
         {
             foreach (var item in Map)
             {
                 item.Tick();
             }
-            var coords = WhereAmI();
-            int i = coords[0];
-            int j = coords[1];
-            int old_i = i;
-            int old_j = j;
+        }
+
+        public void Move(Directions direction)
+        {
+            (int iOriginal, int jOriginal) = WhereAmI();
+            int i = iOriginal;
+            int j = jOriginal;
             switch (direction)
             {
                 case Directions.up:
@@ -111,7 +80,7 @@ namespace Logic
             if (Map[i, j] is Floor)
             {
                 Map[i, j] = ThePlayer;
-                Map[old_i, old_j] = new Floor(old_i,old_j);
+                Map[iOriginal, jOriginal] = new Floor(iOriginal, jOriginal);
             }
         }
 
