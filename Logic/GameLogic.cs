@@ -11,24 +11,26 @@ namespace Logic
 {
     public class GameLogic
     {
-        public static Player ThePlayer = new Player(0, 0, 3, 0);
+        public static Player ThePlayer => new Player(0, 0, 3, 0);
+        private Map Map { get; set; }
+        private Directions lastMove = Directions.nowhere;
+
         public enum Directions
         {
-            up, down
+            nowhere, up, down
         }
         public void KeyPressed(Key key)
         {
             switch (key)
             {
                 case Key.Up:
-                    Move(Directions.up);
+                    lastMove = Directions.up;
                     break;
                 case Key.Down:
-                    Move(Directions.down);
+                    lastMove = Directions.down;
                     break;
             }
         }
-        Map Map { get; set; }
         public GameLogic()
         {
             //Ezt a részt át lehetne vinni a Mapba de nem voltam biztos hogy szeretnétek.
@@ -41,21 +43,20 @@ namespace Logic
             Map.PopulateMapFromStreamReader(streamReader, ThePlayer);
         }
 
-        private (int X, int Y) WhereAmI()
-        {
-            Map.IndexOf(x => x is Player);
-            return (-1, -1);
-        }
-
         public void GameTick()
         {
             foreach (var item in Map)
             {
                 item.Tick();
             }
+            if (lastMove!=Directions.nowhere)
+            {
+                Move(lastMove);
+                lastMove = Directions.nowhere;
+            }
         }
 
-        public void Move(Directions direction)
+        private void Move(Directions direction)
         {
             (int iOriginal, int jOriginal) = WhereAmI();
             int i = iOriginal;
@@ -83,6 +84,12 @@ namespace Logic
                 Map[iOriginal, jOriginal] = new Floor(iOriginal, jOriginal);
             }
         }
+        private (int X, int Y) WhereAmI()
+        {
+            Map.IndexOf(x => x is Player);
+            return (-1, -1);
+        }
+
 
     }
 }
