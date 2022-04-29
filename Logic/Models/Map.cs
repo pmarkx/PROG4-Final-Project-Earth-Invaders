@@ -73,19 +73,19 @@ namespace Logic.Models
                     {
                         switch (line[j])
                         {
-                            case 'F':
+                            case 'f':
                                 this[i, j] = new Floor(i, j);
                                 break;
-                            case 'M':
+                            case 'm':
                                 this[i, j] = new Mine(i, j);
                                 break;
-                            case 'W':
+                            case 'w':
                                 this[i, j] = new Wall(i, j);
                                 break;
-                            case 'E':
+                            case 'e':
                                 this[i, j] = new Enemy(i, j);
                                 break;
-                            case 'P':
+                            case 'p':
                                 this[i, j] = thePlayer;
                                 break;
                         }
