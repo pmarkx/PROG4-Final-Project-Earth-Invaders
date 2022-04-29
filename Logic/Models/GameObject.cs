@@ -30,5 +30,26 @@
                 IsLive = false;
             }
         }
+        public virtual void Move(Directions direction)
+        {
+            switch (direction)
+            {
+                case Directions.up:
+                    XPosition--;
+                    break;
+                case Directions.down:
+                    XPosition++;
+                    break;
+                case Directions.left:
+                    YPosition--;
+                    break;
+                case Directions.right:
+                    YPosition++;
+                    break;
+                case Directions.nowhere:
+                default:
+                    break;
+            }
+        }
     }
 }

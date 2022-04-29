@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Sprites\**" />
+    <EmbeddedResource Remove="Sprites\**" />
+    <None Remove="Sprites\**" />
+    <Page Remove="Sprites\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Renderer\images\background.png" />
     <None Remove="Renderer\images\enemy.png" />
     <None Remove="Renderer\images\mine.bmp" />
@@ -44,7 +51,6 @@
   <ItemGroup>
 
     <ProjectReference Include="..\Logic\Logic.csproj" />
-    <Folder Include="Sprites\" />
 
   </ItemGroup>
 

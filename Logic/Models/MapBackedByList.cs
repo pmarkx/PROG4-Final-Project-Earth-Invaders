@@ -2,62 +2,68 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic.Models
 {
-    public class Map : IMap
+    public class MapBackedByList : IMap
     {
-        public Map(int indexX, int indexY)
+        private List<GameObject> MapList;
+        private int maxX;
+        private int maxY;
+
+        public MapBackedByList(int indexX, int indexY)
         {
-            MapArray = new GameObject[indexX, indexY];
+            maxX = indexX;
+            maxY = indexY;
+            MapList = new List<GameObject>();
         }
-
-        private GameObject[,] MapArray { get; set; }
-
-        public IEnumerator<GameObject> GetEnumerator()
-        {
-            for (int i = 0; i < MapArray.GetLength(0); i++)
-            {
-                for (int j = 0; j < MapArray.GetLength(1); j++)
-                {
-                    yield return MapArray[i, j];
-                }
-            }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
         public GameObject this[int index1, int index2]
         {
             get
             {
-                return MapArray[index1, index2];
+                return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
             }
             set
             {
-                MapArray[index1, index2] = value;
+                value.XPosition = index1;
+                value.YPosition = index2;
+                MapList.Add(value);
             }
+        }
+
+        public void CheckDie()
+        {
+            for (int i = 0; i < MapList.Count; i++)
+            {
+                if (!MapList[i].IsLive)
+                    MapList.Remove(MapList[i]);
+            }
+        }
+
+        public IEnumerator<GameObject> GetEnumerator()
+        {
+            return MapList.GetEnumerator();
         }
 
         public int GetLength(int dimension)
         {
-            return MapArray.GetLength(dimension);
+            return dimension switch
+            {
+                0 => maxX,
+                1 => maxY,
+                _ => 0
+            };
         }
 
         public (int X, int Y) IndexOf(Func<GameObject, bool> condition)
         {
-            for (int i = 0; i < GetLength(0); i++)
+            foreach (var item in MapList)
             {
-                for (int j = 0; j < GetLength(1); j++)
-                {
-                    if (condition(this[i, j]))
-                    {
-                        return (i, j);
-                    }
-                }
+                if (condition(item))
+                    return (item.XPosition, item.YPosition);
             }
             return (-1, -1);
         }
@@ -74,7 +80,7 @@ namespace Logic.Models
                         switch (line[j])
                         {
                             case 'f':
-                                this[i, j] = new Floor(i, j);
+                                //this[i, j] = new Floor(i, j);
                                 break;
                             case 'm':
                                 this[i, j] = new Mine(i, j);
@@ -90,22 +96,13 @@ namespace Logic.Models
                                 break;
                         }
                     }
-                }
+                 }
             }
         }
 
-        public void CheckDie()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            for (int i = 0; i < GetLength(0); i++)
-            {
-                for (int j = 0; j < GetLength(1); j++)
-                {
-                    if (this[i, j].IsLive==false)
-                    {
-                        this[i, j] = new Floor(i, j);
-                    }
-                }
-            }
+           return this.GetEnumerator();
         }
     }
 }

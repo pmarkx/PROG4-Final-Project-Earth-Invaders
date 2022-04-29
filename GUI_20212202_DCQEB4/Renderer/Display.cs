@@ -37,8 +37,9 @@ namespace UI.Renderer
                 double rectWidth = size.Width / model.Map.GetLength(0);
                 double rectHeight = size.Height / model.Map.GetLength(1);
 
-                drawingContext.DrawRectangle(Brushes.Black, new Pen(Brushes.Black, 0),
-                    new Rect(0, 0, size.Width, size.Height));
+                //drawingContext.DrawRectangle(Brushes.Black, new Pen(Brushes.Black, 0),
+                //    new Rect(0, 0, size.Width, size.Height));
+                string folder = "./Renderer/images/";
 
                 //https://stackoverflow.com/questions/31701159/alternative-to-bitmapimage-to-load-a-png
                 for (int i = 0; i < model.Map.GetLength(0); i++)
@@ -51,21 +52,21 @@ namespace UI.Renderer
                         {
                             case Player:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(new Uri(Path.Combine("player.png"), UriKind.RelativeOrAbsolute)));
+                                    (BitmapFrame.Create(File.OpenRead(folder+"player.png")));
                                 break;
                             case Wall:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(new Uri(Path.Combine("wall.png"), UriKind.RelativeOrAbsolute)));
+                                    (BitmapFrame.Create(File.OpenRead(folder+"wall.png")));
                                 break;
                             case Floor:
                                 break;
                             case Mine:
                                 brush = new ImageBrush
-                                    (new BitmapImage(new Uri(Path.Combine("mine.bmp"), UriKind.RelativeOrAbsolute)));
+                                    ( BitmapFrame.Create(File.OpenRead(folder+"mine.bmp")));
                                 break;
                             case Enemy:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(new Uri(Path.Combine("enemy.png"), UriKind.RelativeOrAbsolute)));
+                                    (BitmapFrame.Create(File.OpenRead(folder+"enemy.png")));
                                 break;
                             default:
                                 break;

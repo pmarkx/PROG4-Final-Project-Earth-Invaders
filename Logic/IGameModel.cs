@@ -4,7 +4,7 @@ namespace Logic
 {
     public interface IGameModel
     {
-        Map Map { get; set; }
+        IMap Map { get; set; }
     }
 
 }
