@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Logic.Models
 {
-    class Map : IEnumerable<GameObject>
+    public class Map : IEnumerable<GameObject>
     {
         public Map(int indexX,int indexY)
         {

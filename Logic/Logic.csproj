@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="maps\map01.txt" />
+    <None Remove="map.txt" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="maps\map01.txt">
+    <Content Include="map.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

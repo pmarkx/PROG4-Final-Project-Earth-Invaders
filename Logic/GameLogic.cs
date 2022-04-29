@@ -13,7 +13,7 @@ namespace Logic
     {
 
         public static Player ThePlayer => new Player(0, 0, 3, 0);
-        private Map Map { get; set; }
+        public Map Map { get; set; }
         private Directions lastMove = Directions.nowhere;
 
         public enum Directions
@@ -21,22 +21,19 @@ namespace Logic
             nowhere, up, down
         }
 
-        public GameObject[,] GameMatrix { get; set; }
+        //private void LoadNext(string path)
+        //{
+        //    string[] lines = File.ReadAllLines(path);
+        //    Map = new Map[int.Parse(lines[0]), int.Parse(lines[1])];
+        //    for (int i = 0; i < GameMatrix.GetLength(0); i++)
+        //    {
 
-
-        private void LoadNext(string path)
-        {
-            string[] lines = File.ReadAllLines(path);
-            GameMatrix = new GameObject[int.Parse(lines[0]), int.Parse(lines[1])];
-            for (int i = 0; i < GameMatrix.GetLength(0); i++)
-            {
-
-                for (int j = 0; j < GameMatrix.GetLength(1); j++)
-                {
-                    GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i + 2, j);
-                }
-            }
-        }
+        //        for (int j = 0; j < GameMatrix.GetLength(1); j++)
+        //        {
+        //            GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i + 2, j);
+        //        }
+        //    }
+        //}
 
         private GameObject ConvertToEnum(char v, int x, int y)
         {
