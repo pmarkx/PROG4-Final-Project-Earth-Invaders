@@ -30,8 +30,9 @@ namespace UI.Renderer
 
         protected override void OnRender(DrawingContext drawingContext)
         {
+            ;
             base.OnRender(drawingContext);
-            if (model != null && size.Width > 50 && size.Height > 50)
+            if (model != null&&size.Width > 50 && size.Height > 50)
             {
                 double rectWidth = size.Width / model.Map.GetLength(0);
                 double rectHeight = size.Height / model.Map.GetLength(1);
@@ -45,25 +46,26 @@ namespace UI.Renderer
                     for (int j = 0; j < model.Map.GetLength(1); j++)
                     {
                         ImageBrush brush = new ImageBrush();
+                       
                         switch (model.Map[i, j])
                         {
                             case Player:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(new Uri(Path.Combine("images", "pldfgdayer.png"), UriKind.RelativeOrAbsolute)));
+                                    (BitmapFrame.Create(new Uri(Path.Combine("player.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case Wall:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(new Uri(Path.Combine("images", "waffll.png"), UriKind.RelativeOrAbsolute)));
+                                    (BitmapFrame.Create(new Uri(Path.Combine("wall.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case Floor:
                                 break;
                             case Mine:
                                 brush = new ImageBrush
-                                    (new BitmapImage(new Uri(Path.Combine("images", "mine.bmp"), UriKind.RelativeOrAbsolute)));
+                                    (new BitmapImage(new Uri(Path.Combine("mine.bmp"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case Enemy:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(new Uri(Path.Combine("images", "enemy.png"), UriKind.RelativeOrAbsolute)));
+                                    (BitmapFrame.Create(new Uri(Path.Combine("enemy.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             default:
                                 break;

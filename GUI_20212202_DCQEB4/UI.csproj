@@ -8,6 +8,40 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Renderer\images\background.png" />
+    <None Remove="Renderer\images\enemy.png" />
+    <None Remove="Renderer\images\mine.bmp" />
+    <None Remove="Renderer\images\mine.png" />
+    <None Remove="Renderer\images\player.png" />
+    <None Remove="Renderer\images\player.svg" />
+    <None Remove="Renderer\images\wall.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Renderer\images\background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\enemy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\mine.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\mine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\player.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\wall.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
 
     <ProjectReference Include="..\Logic\Logic.csproj" />
     <Folder Include="Sprites\" />

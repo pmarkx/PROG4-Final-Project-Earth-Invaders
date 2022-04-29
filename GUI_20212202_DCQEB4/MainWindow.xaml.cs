@@ -35,12 +35,14 @@ namespace GUI_20212202_DCQEB4
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
             display.InvalidateVisual();
+
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
             display.InvalidateVisual();
+            ;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
