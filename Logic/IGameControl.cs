@@ -10,5 +10,6 @@ namespace Logic
     public interface IGameControl
     {
         void Move(Directions direction);
+        void GameTick();
     }
 }

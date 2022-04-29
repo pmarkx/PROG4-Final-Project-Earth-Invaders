@@ -57,34 +57,22 @@ namespace Logic
             }
             if (lastMove!=Directions.nowhere)
             {
-                Move(lastMove);
+                DoMove(lastMove);
                 lastMove = Directions.nowhere;
             }
             Map.CollisionDetect();
         }
 
+        //TODO: Create EnumWithActions
         public void Move(Directions direction)
         {
-            //(int X, int Y) = WhereAmI();
-            //switch (direction)
-            //{
-            //    case Directions.up:
-            //        if (X - 1 >= 0)
-            //        {
-            //            Map[X, Y].XPosition++;
-            //        }
-            //        break;
-            //    case Directions.down:
-            //        if (X + 1 < Map.GetLength(0))
-            //        {
-            //            Map[X, Y].XPosition--;
-            //        }
-            //        break;
-            //    default:
-            //        break;
-            //}
-            ThePlayer.Move(direction);
+            lastMove = direction;
             
+        }
+        private void DoMove(Directions direction)
+        {
+            ThePlayer.Move(direction);
+
         }
         private (int X, int Y) WhereAmI()
         {

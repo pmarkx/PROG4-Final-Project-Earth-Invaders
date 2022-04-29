@@ -29,26 +29,32 @@ namespace GUI_20212202_DCQEB4
             GameLogic logic = new GameLogic();
             display.SetupModel(logic);
             controller = new GameController(logic);
+            controller.TickTick += Controller_TickTick;
+        }
+
+        private void Controller_TickTick()
+        {
+           // display.InvalidateVisual();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
-            display.InvalidateVisual();
+           // display.InvalidateVisual();
 
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
-            display.InvalidateVisual();
+            //display.InvalidateVisual();
             ;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             controller.KeyPressed(e.Key);
-            display.InvalidateVisual();
+           // display.InvalidateVisual();
         }
     }
 }

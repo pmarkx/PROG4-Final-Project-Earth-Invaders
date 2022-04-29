@@ -28,7 +28,7 @@ namespace UI.Renderer
             this.model = model;
         }
 
-        protected override void OnRender(DrawingContext drawingContext)
+        protected  void OnRender(DrawingContext drawingContext)
         {
             ;
             base.OnRender(drawingContext);
