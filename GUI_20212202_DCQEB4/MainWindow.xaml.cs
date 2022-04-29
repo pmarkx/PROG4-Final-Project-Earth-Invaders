@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI.Controller;
 
 namespace GUI_20212202_DCQEB4
 {
@@ -20,9 +22,31 @@ namespace GUI_20212202_DCQEB4
     /// </summary>
     public partial class MainWindow : Window
     {
+        GameController controller;
         public MainWindow()
         {
             InitializeComponent();
+            GameLogic logic = new();
+            display.SetupModel(logic);
+            controller = new GameController(logic);
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
+            display.InvalidateVisual();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
+            display.InvalidateVisual();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            controller.KeyPressed(e.Key);
+            display.InvalidateVisual();
         }
     }
 }

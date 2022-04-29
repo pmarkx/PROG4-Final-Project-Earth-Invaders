@@ -9,8 +9,9 @@ using System.Windows.Input;
 
 namespace Logic
 {
-    public class GameLogic
+    public class GameLogic : IGameModel, IGameControl
     {
+
         public static Player ThePlayer => new Player(0, 0, 3, 0);
         private Map Map { get; set; }
         private Directions lastMove = Directions.nowhere;
@@ -19,18 +20,76 @@ namespace Logic
         {
             nowhere, up, down
         }
-        public void KeyPressed(Key key)
+
+        public GameObject[,] GameMatrix { get; set; }
+
+
+        private void LoadNext(string path)
         {
-            switch (key)
+            string[] lines = File.ReadAllLines(path);
+            GameMatrix = new GameObject[int.Parse(lines[0]), int.Parse(lines[1])];
+            for (int i = 0; i < GameMatrix.GetLength(0); i++)
             {
-                case Key.Up:
-                    lastMove = Directions.up;
-                    break;
-                case Key.Down:
-                    lastMove = Directions.down;
-                    break;
+
+                for (int j = 0; j < GameMatrix.GetLength(1); j++)
+                {
+                    GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i + 2, j);
+                }
             }
         }
+
+        private GameObject ConvertToEnum(char v, int x, int y)
+        {
+            switch (v)
+            {
+                case 'f': return new Floor(x, y);
+                case 'm': return new Mine(x, y);
+                case 'w': return new Wall(x, y);
+                case 'e': return new Enemy(x, y);
+                case 'p': return ThePlayer;
+                default: throw new Exception("unknown character!");
+            }
+        }
+
+        private Queue<string> levels;
+
+        //public GameLogic()
+        //{
+        //    levels = new Queue<string>();
+        //    var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "maps"), "*.txt");
+        //    foreach (var item in lvls)
+        //    {
+        //        levels.Enqueue(item);
+        //    }
+        //    LoadNext(levels.Dequeue());
+        //}
+        
+        //private int[] WhereAmI()
+        //{
+        //    for (int i = 0; i < Map.GetLength(0); i++)
+        //    {
+        //        for (int j = 0; j < Map.GetLength(1); j++)
+        //        {
+        //            if (Map[i, j] is Player)
+        //            {
+        //                return new int[] { i, j };
+        //            }
+        //        }
+        //    }
+        //    return new int[] { -1, -1 };
+        //}
+        //public void Move(Directions direction)
+        //{
+        //    switch(direction)
+        //    {
+        //        case Directions.up:
+        //            lastMove = Directions.up;
+        //            break;
+        //        case Directions.down:
+        //            lastMove = Directions.down;
+        //            break;
+        //    }
+        //}
         public GameLogic()
         {
             //Ezt a részt át lehetne vinni a Mapba de nem voltam biztos hogy szeretnétek.
@@ -56,7 +115,7 @@ namespace Logic
             }
         }
 
-        private void Move(Directions direction)
+        public void Move(Directions direction)
         {
             (int iOriginal, int jOriginal) = WhereAmI();
             int i = iOriginal;
@@ -81,6 +140,7 @@ namespace Logic
             if (Map[i, j] is Floor)
             {
                 Map[i, j] = ThePlayer;
+
                 Map[iOriginal, jOriginal] = new Floor(iOriginal, jOriginal);
             }
         }
@@ -89,7 +149,6 @@ namespace Logic
             Map.IndexOf(x => x is Player);
             return (-1, -1);
         }
-
 
     }
 }
