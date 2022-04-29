@@ -33,7 +33,7 @@ namespace Logic
 
                 for (int j = 0; j < GameMatrix.GetLength(1); j++)
                 {
-                    GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i+2, j);
+                    GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i + 2, j);
                 }
             }
         }
@@ -42,91 +42,54 @@ namespace Logic
         {
             switch (v)
             {
-                case 'f': return new Floor(x,y);
-                case 'm': return new Mine(x,y);
-                case 'w': return new Wall(x,y);
-                case 'e': return new Enemy(x,y);
+                case 'f': return new Floor(x, y);
+                case 'm': return new Mine(x, y);
+                case 'w': return new Wall(x, y);
+                case 'e': return new Enemy(x, y);
                 case 'p': return ThePlayer;
                 default: throw new Exception("unknown character!");
             }
         }
 
-        static public Player ThePlayer = new Player(0, 0, 3, 0);
-
-        GameObject[,] Map { get; set; }
-
         private Queue<string> levels;
 
-        public GameLogic()
-        {
-            levels = new Queue<string>();
-            var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "maps"), "*.txt");
-            foreach (var item in lvls)
-            {
-                levels.Enqueue(item);
-            }
-            LoadNext(levels.Dequeue());
-        }
         //public GameLogic()
         //{
-        //    StreamReader streamReader = new StreamReader("map.txt");
-        //    string[] Mapsize = streamReader.ReadLine().Split(",");
-        //    Map = new GameObject[int.Parse(Mapsize[0]), int.Parse(Mapsize[1])];
-
-        //    if (!streamReader.EndOfStream)
+        //    levels = new Queue<string>();
+        //    var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "maps"), "*.txt");
+        //    foreach (var item in lvls)
         //    {
-        //        for (int i = 0; i < Map.GetLength(0); i++)
+        //        levels.Enqueue(item);
+        //    }
+        //    LoadNext(levels.Dequeue());
+        //}
+        
+        //private int[] WhereAmI()
+        //{
+        //    for (int i = 0; i < Map.GetLength(0); i++)
+        //    {
+        //        for (int j = 0; j < Map.GetLength(1); j++)
         //        {
-        //            string help = streamReader.ReadLine();
-        //            for (int j = 0; j < Map.GetLength(1); j++)
+        //            if (Map[i, j] is Player)
         //            {
-        //                switch (help[j])
-        //                {
-        //                    case ' ':
-        //                        Map[i, j] = new Floor(i, j);
-        //                        break;
-        //                    case 'M':
-        //                        Map[i, j] = new Mine(i, j);
-        //                        break;
-        //                    case 'W':
-        //                        Map[i, j] = new Wall(i, j);
-        //                        break;
-        //                    case 'E':
-        //                        Map[i, j] = new Enemy(i, j);
-        //                        break;
-        //                    case 'P':
-        //                        Map[i, j] = ThePlayer;
-        //                        break;
-
-        //                }
+        //                return new int[] { i, j };
         //            }
         //        }
         //    }
-        //    streamReader.Close();
+        //    return new int[] { -1, -1 };
         //}
-        private int[] WhereAmI()
-        {
-            for (int i = 0; i < Map.GetLength(0); i++)
-            {
-                for (int j = 0; j < Map.GetLength(1); j++)
-                {
-                    if (Map[i, j] is Player)
-                    {
-                        return new int[] { i, j };
-                    }
-                }
-            }
-            return new int[] { -1, -1 };
-        }
-        public void Move(Directions direction)
-                case Key.Up:
-                    lastMove = Directions.up;
-                    break;
-                case Key.Down:
-                    lastMove = Directions.down;
-                    break;
-            }
-        }
+        //public void Move(Directions direction)
+        //{
+        //    switch(direction)
+        //    {
+        //        case Directions.up:
+        //            lastMove = Directions.up;
+        //            break;
+        //        case Directions.down:
+        //            lastMove = Directions.down;
+        //            break;
+        //    }
+        //}
         public GameLogic()
         {
             //Ezt a részt át lehetne vinni a Mapba de nem voltam biztos hogy szeretnétek.
@@ -152,7 +115,7 @@ namespace Logic
             }
         }
 
-        private void Move(Directions direction)
+        public void Move(Directions direction)
         {
             (int iOriginal, int jOriginal) = WhereAmI();
             int i = iOriginal;
