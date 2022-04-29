@@ -1,9 +1,10 @@
-﻿using static Logic.GameLogic;
+﻿using Logic.Models;
+using static Logic.GameLogic;
 
 namespace Logic
 {
     public interface IGameModel
     {
-        SpaceItem[,] GameMatrix { get; set; }
+        GameObject[,] GameMatrix { get; set; }
     }
 }

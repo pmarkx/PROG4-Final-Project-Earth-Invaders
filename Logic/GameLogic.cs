@@ -9,47 +9,43 @@ using System.Windows.Input;
 
 namespace Logic
 {
-    public class GameLogic : IGameModel
+    public class GameLogic : IGameModel, IGameControl
     {
-        public enum SpaceItem
+        public enum Directions
         {
-            player, wall, floor, enemy, mine
+            up, down
         }
 
-        public SpaceItem[,] GameMatrix { get; set; }
+        public GameObject[,] GameMatrix { get; set; }
 
 
         private void LoadNext(string path)
         {
             string[] lines = File.ReadAllLines(path);
-            GameMatrix = new SpaceItem[int.Parse(lines[0]), int.Parse(lines[1])];
+            GameMatrix = new GameObject[int.Parse(lines[0]), int.Parse(lines[1])];
             for (int i = 0; i < GameMatrix.GetLength(0); i++)
             {
                 for (int j = 0; j < GameMatrix.GetLength(1); j++)
                 {
-                    GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j]);
+                    GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i+2, j);
                 }
             }
         }
 
-        private SpaceItem ConvertToEnum(char v)
+        private GameObject ConvertToEnum(char v, int x, int y)
         {
             switch (v)
             {
-                case ' ': return SpaceItem.floor;
-                case 'M': return SpaceItem.mine;
-                case 'W': return SpaceItem.wall;
-                case 'E': return SpaceItem.enemy;
-                case 'P': return SpaceItem.player;
+                case 'f': return new Floor(x,y);
+                case 'm': return new Mine(x,y);
+                case 'w': return new Wall(x,y);
+                case 'e': return new Enemy(x,y);
+                case 'p': return ThePlayer;
                 default: throw new Exception("unknown character!");
             }
         }
 
         static public Player ThePlayer = new Player(0, 0, 3, 0);
-        public enum Directions
-        {
-            up, down
-        }
 
         GameObject[,] Map { get; set; }
 
@@ -58,7 +54,7 @@ namespace Logic
         public GameLogic()
         {
             levels = new Queue<string>();
-            var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Levels"), "*.txt");
+            var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "maps"), "*.txt");
             foreach (var item in lvls)
             {
                 levels.Enqueue(item);
@@ -150,17 +146,5 @@ namespace Logic
                 Map[old_i, old_j] = new Floor(old_i, old_j);
             }
         }
-        //public void KeyPressed(Key key)
-        //{
-        //    switch (key)
-        //    {
-        //        case Key.Up:
-        //            Move(Directions.up);
-        //            break;
-        //        case Key.Down:
-        //            Move(Directions.down);
-        //            break;
-        //    }
-        //}
     }
 }
