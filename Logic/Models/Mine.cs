@@ -10,8 +10,6 @@ namespace Logic.Models
     {
         public Mine(int xPosition, int yPosition) : base(xPosition, yPosition, "M", 1, false, 0)
         {
-            IsSolid = true;
         }
-
     }
 }

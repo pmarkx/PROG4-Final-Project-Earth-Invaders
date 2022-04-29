@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+
     <ProjectReference Include="..\Logic\Logic.csproj" />
+    <Folder Include="Sprites\" />
+
   </ItemGroup>
 
 </Project>

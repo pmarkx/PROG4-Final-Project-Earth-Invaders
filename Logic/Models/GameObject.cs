@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Logic.Models
+﻿namespace Logic.Models
 {
     public abstract class GameObject
     {
@@ -17,7 +11,7 @@ namespace Logic.Models
         public int Ammo { get; set; }
         public bool IsSolid { get; protected set; }
 
-        protected GameObject(int xPosition, int yPosition, string name, int life, bool weaponOn, int ammo)
+        protected GameObject(int xPosition, int yPosition, string name, int life, bool weaponOn, int ammo, bool isSolid=true)
         {
             XPosition = xPosition;
             YPosition = yPosition;
@@ -26,6 +20,7 @@ namespace Logic.Models
             IsLive = true;
             WeaponOn = weaponOn;
             Ammo = ammo;
+            IsSolid = isSolid;
         }
 
         public virtual void Tick()

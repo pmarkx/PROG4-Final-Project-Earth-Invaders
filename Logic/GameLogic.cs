@@ -11,9 +11,14 @@ namespace Logic
 {
     public class GameLogic : IGameModel, IGameControl
     {
+
+        public static Player ThePlayer => new Player(0, 0, 3, 0);
+        private Map Map { get; set; }
+        private Directions lastMove = Directions.nowhere;
+
         public enum Directions
         {
-            up, down
+            nowhere, up, down
         }
 
         public GameObject[,] GameMatrix { get; set; }
@@ -25,6 +30,7 @@ namespace Logic
             GameMatrix = new GameObject[int.Parse(lines[0]), int.Parse(lines[1])];
             for (int i = 0; i < GameMatrix.GetLength(0); i++)
             {
+
                 for (int j = 0; j < GameMatrix.GetLength(1); j++)
                 {
                     GameMatrix[i, j] = ConvertToEnum(lines[i + 2][j], i+2, j);
@@ -113,16 +119,44 @@ namespace Logic
             return new int[] { -1, -1 };
         }
         public void Move(Directions direction)
+                case Key.Up:
+                    lastMove = Directions.up;
+                    break;
+                case Key.Down:
+                    lastMove = Directions.down;
+                    break;
+            }
+        }
+        public GameLogic()
+        {
+            //Ezt a részt át lehetne vinni a Mapba de nem voltam biztos hogy szeretnétek.
+            using StreamReader streamReader = new StreamReader("map.txt");
+            var (MapsizeX, MapsizeY) = streamReader.ReadLine().Split(",") switch
+            {
+                var a => (int.Parse(a[0]), int.Parse(a[1])),
+            };
+            Map = new Map(MapsizeX, MapsizeY);
+            Map.PopulateMapFromStreamReader(streamReader, ThePlayer);
+        }
+
+        public void GameTick()
         {
             foreach (var item in Map)
             {
                 item.Tick();
             }
-            var coords = WhereAmI();
-            int i = coords[0];
-            int j = coords[1];
-            int old_i = i;
-            int old_j = j;
+            if (lastMove!=Directions.nowhere)
+            {
+                Move(lastMove);
+                lastMove = Directions.nowhere;
+            }
+        }
+
+        private void Move(Directions direction)
+        {
+            (int iOriginal, int jOriginal) = WhereAmI();
+            int i = iOriginal;
+            int j = jOriginal;
             switch (direction)
             {
                 case Directions.up:
@@ -143,8 +177,15 @@ namespace Logic
             if (Map[i, j] is Floor)
             {
                 Map[i, j] = ThePlayer;
-                Map[old_i, old_j] = new Floor(old_i, old_j);
+
+                Map[iOriginal, jOriginal] = new Floor(iOriginal, jOriginal);
             }
         }
+        private (int X, int Y) WhereAmI()
+        {
+            Map.IndexOf(x => x is Player);
+            return (-1, -1);
+        }
+
     }
 }
