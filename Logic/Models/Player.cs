@@ -16,5 +16,24 @@ namespace Logic.Models
         {
             
         }
+        public override void Collided(IEnumerable<GameObject> collidedWith)
+        {
+            base.Collided(collidedWith);
+            foreach (var item in collidedWith)
+            {
+                switch (item)
+                {
+                    case Enemy e:
+                        Life--;
+                        e.Life--;
+                        break;
+                    case Wall w:
+                        Life = 0;
+                        break;
+                    default:
+                        break;
+                };
+            }
+        }
     }
 }

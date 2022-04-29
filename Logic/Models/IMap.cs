@@ -13,5 +13,6 @@ namespace Logic.Models
         (int X, int Y) IndexOf(Func<GameObject, bool> condition);
         void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer);
         void CheckDie();
+        public void CollisionDetect();
     }
 }

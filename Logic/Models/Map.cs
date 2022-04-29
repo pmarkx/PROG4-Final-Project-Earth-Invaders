@@ -107,5 +107,10 @@ namespace Logic.Models
                 }
             }
         }
+
+        public void CollisionDetect()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

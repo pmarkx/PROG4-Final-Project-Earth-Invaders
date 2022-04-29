@@ -1,4 +1,6 @@
-﻿namespace Logic.Models
+﻿using System.Collections.Generic;
+
+namespace Logic.Models
 {
     public abstract class GameObject
     {
@@ -25,7 +27,7 @@
 
         public virtual void Tick()
         {
-            if (Life>=0)
+            if (Life<=0)
             {
                 IsLive = false;
             }
@@ -50,6 +52,10 @@
                 default:
                     break;
             }
+        }
+        public virtual void Collided(IEnumerable<GameObject> collidedWith)
+        {
+
         }
     }
 }

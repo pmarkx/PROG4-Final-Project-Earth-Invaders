@@ -60,6 +60,7 @@ namespace Logic
                 Move(lastMove);
                 lastMove = Directions.nowhere;
             }
+            Map.CollisionDetect();
         }
 
         public void Move(Directions direction)

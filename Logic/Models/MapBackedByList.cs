@@ -96,13 +96,24 @@ namespace Logic.Models
                                 break;
                         }
                     }
-                 }
+                }
             }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-           return this.GetEnumerator();
+            return this.GetEnumerator();
+        }
+
+        public void CollisionDetect()
+        {
+            foreach (var item in MapList)
+            {
+                if (MapList.Count(x => x.XPosition == item.XPosition && x.YPosition == item.YPosition) > 1)
+                {
+                    item.Collided(MapList.Where(x => x.XPosition == item.XPosition && x.YPosition == item.YPosition));
+                }
+            }
         }
     }
 }
