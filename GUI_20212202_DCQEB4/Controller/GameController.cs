@@ -21,11 +21,11 @@ namespace UI.Controller
         public GameController(IGameControl control)
         {
             this.control = control;
-            control.GameTickInterval = new TimeSpan(0,0,0,0,101);
+            control.GameTickInterval = new TimeSpan(0,0,0,0,100);
             control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0, 300);
-            control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 0,300);
-            control.BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 242);
-            control.ShootingBetweenInterval = new TimeSpan(0, 0, 0, 1);
+            control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 0,400);
+            control.BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 200);
+            control.ShootingBetweenInterval = new TimeSpan(0, 0, 0, 2);
             control.GameTickHappened += Control_GameTickHappened;
             UITimer = new DispatcherTimer();
             UITimer.Interval=new TimeSpan(3);
