@@ -7,7 +7,7 @@
         xmlns:renderer="clr-namespace:UI.Renderer"
         xmlns:vm="clr-namespace:UI.VM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+        Title="MainWindow" WindowState="Maximized" WindowStyle="SingleBorderWindow" Height="450" Width="800" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>

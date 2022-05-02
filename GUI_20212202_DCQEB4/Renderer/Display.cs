@@ -61,7 +61,7 @@ namespace UI.Renderer
                                 break;
                             case Mine:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(File.OpenRead(folder + "mine.bmp")));
+                                    (BitmapFrame.Create(File.OpenRead(folder + "mine.png")));
                                 break;
                             case Enemy:
                                 brush = new ImageBrush
