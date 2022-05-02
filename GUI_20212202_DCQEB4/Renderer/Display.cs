@@ -67,6 +67,11 @@ namespace UI.Renderer
                                 brush = new ImageBrush
                                     (BitmapFrame.Create(File.OpenRead(folder + "enemy.png")));
                                 break;
+                            case LifeReward:
+                                brush = new ImageBrush
+                                    (BitmapFrame.Create(File.OpenRead(folder + "lifereward.png")));
+                                break;
+
                             default:
                                 break;
                         }
