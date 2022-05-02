@@ -59,11 +59,12 @@ namespace Logic.Models
 
         public void CheckDie()
         {
-            for (int i = 0; i < MapList.Count; i++)
-            {
-                if (!MapList[i].IsLive)
-                    MapList.Remove(MapList[i]);
-            }
+            lock (this)
+                for (int i = 0; i < MapList.Count; i++)
+                {
+                    if (!MapList[i].IsLive)
+                        MapList.Remove(MapList[i]);
+                }
         }
 
         public IEnumerator<GameObject> GetEnumerator()
