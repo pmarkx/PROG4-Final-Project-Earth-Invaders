@@ -7,16 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="map.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="map.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="startMap.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

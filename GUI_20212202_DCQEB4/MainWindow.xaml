@@ -30,6 +30,6 @@
         <Label Content="{Binding ScoreText}" Foreground="White"/>
         <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="White"/>
         <Label Grid.Column="2" Content="{Binding AmmoText}" Foreground="White"/>
-        <MediaElement Source="./Renderer/images/music.mp3" Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"></MediaElement>
+        <MediaElement Source="./Renderer/images/music.mp3" Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"/>
     </Grid>
 </Window>
