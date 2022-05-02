@@ -32,7 +32,7 @@ namespace Logic
 
         public long Ammo { get; private set; }
 
-        private Directions lastMove = Directions.nowhere;
+        private Constants.Directions lastMove = Constants.Directions.nowhere;
         private Timer gameTimer;
         private Timer enemyTimer;
         private Timer enemySpawnTimer;
@@ -47,19 +47,20 @@ namespace Logic
         public static int EnemyDied = 0;
 
 
-
         static GameLogic()
         {
-            ThePlayer = new Player(0, 0, 3, 3);
+            ThePlayer = new Player(0, 0, Constants.DefaultLifes, Constants.DefaultAmmo);
         }
+
         public GameLogic()
         {
             using StreamReader streamReader = new StreamReader("map.txt");
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-            Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : 0;
-            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : 3;
+            Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
+            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
         }
+
         public void StartGame()
         {
             gameTimer = new Timer();
@@ -122,7 +123,7 @@ namespace Logic
             shootingBetweenTimer.Start();
         }
         //TODO: Create EnumWithActions
-        public void Move(Directions direction)
+        public void Move(Constants.Directions direction)
         {
             lastMove = direction;
 
@@ -167,10 +168,10 @@ namespace Logic
                     Map.EnemyRushing();
                     enemySpawns = false;
                 }
-                if (lastMove != Directions.nowhere)
+                if (lastMove != Constants.Directions.nowhere)
                 {
                     DoMove(lastMove);
-                    lastMove = Directions.nowhere;
+                    lastMove = Constants.Directions.nowhere;
                 }
                 if (!ThePlayer.IsLive)
                     GameOverTrigger();
@@ -189,7 +190,7 @@ namespace Logic
         }
 
 
-        private void DoMove(Directions direction)
+        private void DoMove(Constants.Directions direction)
         {
             ThePlayer.Move(direction);
 
