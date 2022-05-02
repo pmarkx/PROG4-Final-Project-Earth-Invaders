@@ -15,6 +15,7 @@ namespace Logic.Models
         void CheckDie();
         void CollisionDetect();
         void EnemyRushing();
+        void LifeRewardRushing();
         void SpawnSomething(GameObject gameObject);
         void SaveState(StreamWriter streamWriter, long Score, int Lifes);
         void SaveState(StreamWriter streamWriter);

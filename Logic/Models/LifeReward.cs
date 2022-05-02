@@ -18,7 +18,6 @@ namespace Logic.Models
         {
             YPosition--;
             base.Tick();
-
         }
     }
 }

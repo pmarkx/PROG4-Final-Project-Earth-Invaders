@@ -38,9 +38,12 @@ namespace Logic
         private Timer enemySpawnTimer;
         private Timer bulletMoveTimer;
         private Timer shootingBetweenTimer;
+        private Timer liferewardTimer;
 
         private bool enemyMoves = false;
         private bool enemySpawns = false;
+        private bool liferewardSpawns = false;
+        private bool liferewardMoves = false;
         private bool bulletMoves = false;
         private bool canShoot = false;
         public event TickHappened GameTickHappened;
@@ -68,11 +71,13 @@ namespace Logic
             enemySpawnTimer = new Timer();
             bulletMoveTimer = new Timer();
             shootingBetweenTimer = new Timer();
+            liferewardTimer = new Timer();
             gameTimer.Elapsed += GameTimer_Tick;
             enemyTimer.Elapsed += EnemyTimer_Tick;
             enemySpawnTimer.Elapsed += EnemySpawnTimer_Tick;
             bulletMoveTimer.Elapsed += BulletMoveTimer_Tick;
             shootingBetweenTimer.Elapsed += ShootingBetweenTimer_Tick;
+            liferewardTimer.Elapsed += LiferewardTimer_Tick;
             CopyTimerIntervals();
             StartTimers();
         }
@@ -90,6 +95,10 @@ namespace Logic
         private void EnemySpawnTimer_Tick(object? sender, EventArgs e)
         {
             enemySpawns = true;
+        }
+        private void LiferewardTimer_Tick(object? sender, EventArgs e)
+        {
+            liferewardSpawns = true;
         }
         public void RefreshTimers()
         {
@@ -147,6 +156,15 @@ namespace Logic
                     enemyMoves = false;
                     Map.CollisionDetect();
                     Map.CheckDie();
+                }
+                if (liferewardMoves)
+                {
+                    foreach (var item in Map.Where(x => x is LifeReward))
+                    {
+                        item.Tick();
+                    }
+                    liferewardMoves = false;
+                    Map.CollisionDetect();
                 }
                 if (bulletMoves)
                 {
