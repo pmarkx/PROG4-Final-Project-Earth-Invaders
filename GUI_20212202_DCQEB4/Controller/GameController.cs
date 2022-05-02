@@ -35,6 +35,7 @@ namespace UI.Controller
         {
             vm.ScoreText = $"Score: {control.Score}";
             vm.LifeText =$"Lifes: {control.Life}";
+            vm.AmmoText = $"Ammo: {control.Ammo}";
         }
 
         private void Control_GameTickHappened()

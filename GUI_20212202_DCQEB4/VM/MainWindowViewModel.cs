@@ -12,9 +12,11 @@ namespace UI.VM
     {
         private string scoreText;
         private string lifeText;
+        private string ammoText;
 
         public string ScoreText { get => scoreText; set { scoreText = value; this.OnPropertyChanged(); } }
         public string LifeText { get => lifeText; set { lifeText = value; this.OnPropertyChanged(); } }
+        public string AmmoText { get => ammoText; set { ammoText = value; this.OnPropertyChanged(); } }
 
         public event PropertyChangedEventHandler? PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

@@ -30,6 +30,8 @@ namespace Logic
 
         public long Life { get; private set; }
 
+        public long Ammo { get; private set; }
+
         private Directions lastMove = Directions.nowhere;
         private Timer gameTimer;
         private Timer enemyTimer;
@@ -62,7 +64,7 @@ namespace Logic
 
         static GameLogic()
         {
-            ThePlayer = new Player(0, 0, 3, 0);
+            ThePlayer = new Player(0, 0, 3, 3);
         }
         public GameLogic()
         {
@@ -189,6 +191,7 @@ namespace Logic
             GameTickHappened?.Invoke();
             Score += 10;
             Life = ThePlayer.Life;
+            Ammo = ThePlayer.Ammo;
             if (GameLogic.EnemyDied > 0)
             {
                 Score += GameLogic.EnemyDied * 300;
@@ -214,8 +217,9 @@ namespace Logic
 
         public void Shoot()
         {
-            if (canShoot)
+            if (canShoot&&ThePlayer.Ammo>=1)
             {
+                ThePlayer.Ammo--;
                 var (X, Y) = (ThePlayer.XPosition, ThePlayer.YPosition - 1);
                 Map.SpawnSomething(new Mine(X, Y));
                 canShoot = false;

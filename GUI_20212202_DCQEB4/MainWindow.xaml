@@ -19,6 +19,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition/>
 
         </Grid.ColumnDefinitions>
@@ -26,8 +27,8 @@
                 <ImageBrush ImageSource="/Renderer/images/background.png" Stretch="UniformToFill"/>
             </Grid.Background>
             <renderer:Display x:Name="display" />
-        <Label Content="{Binding ScoreText}" Foreground="White"></Label>
-        <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="White"></Label>
-
+        <Label Content="{Binding ScoreText}" Foreground="White"/>
+        <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="White"/>
+        <Label Grid.Column="2" Content="{Binding AmmoText}" Foreground="White"/>
     </Grid>
 </Window>
