@@ -91,6 +91,7 @@ namespace Logic
                 lastMove = Directions.nowhere;
             }
             Map.CollisionDetect();
+            Map.CheckDie();
             GameTickHappened?.Invoke();
         }
 

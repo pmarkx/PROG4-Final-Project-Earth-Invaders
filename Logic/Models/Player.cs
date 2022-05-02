@@ -14,7 +14,7 @@ namespace Logic.Models
 
         public override void Tick()
         {
-            
+            base.Tick();
         }
         public override void Collided(IEnumerable<GameObject> collidedWith)
         {

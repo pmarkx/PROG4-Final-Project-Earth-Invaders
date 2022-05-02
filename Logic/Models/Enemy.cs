@@ -7,6 +7,7 @@
         }
         public override void Tick()
         {
+            base.Tick();
             YPosition--;
             if (Life<=0)
             {
