@@ -21,8 +21,8 @@ namespace UI.Controller
         {
             this.control = control;
             control.GameTickInterval = new TimeSpan(1);
-            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 1);
-            control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 2);
+            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0,500);
+            control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 1);
             control.GameTickHappened += Control_GameTickHappened;
             control.StartGame();
         }
