@@ -9,6 +9,9 @@ namespace Logic.Models
     public class Player : DynamicObject
     {
         private bool touchedWithEnemy = false;
+
+        public override int Priority => 2;
+
         public Player(int xPosition, int yPosition, int life = 1, int ammo = 0) : base(xPosition, yPosition, "P", life, true, ammo)
         {
         }
@@ -40,8 +43,6 @@ namespace Logic.Models
                         break;
                 };
             }
-            if (Life <= 0)
-               IsLive = false;
         }
     }
 }

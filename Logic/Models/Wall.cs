@@ -10,7 +10,9 @@ namespace Logic.Models
     {
         public Wall(int xPosition, int yPosition) : base(xPosition, yPosition, "W", 99, false, 0)
         {
-            IsSolid=true;
+            IsSolid = true;
         }
+
+        public override int Priority => 3;
     }
 }

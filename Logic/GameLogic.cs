@@ -52,14 +52,8 @@ namespace Logic
         }
         public GameLogic()
         {
-            //Ezt a részt át lehetne vinni a Mapba de nem voltam biztos hogy szeretnétek.
             using StreamReader streamReader = new StreamReader("map.txt");
-            var (MapsizeX, MapsizeY) = streamReader.ReadLine().Split(",") switch
-            {
-                var a => (int.Parse(a[0]), int.Parse(a[1])),
-            };
-            Map = new MapBackedByList(MapsizeX, MapsizeY);
-            Map.PopulateMapFromStreamReader(streamReader, ThePlayer);
+            Map = new MapBackedByList(streamReader, ThePlayer);
 
         }
         public void StartGame()

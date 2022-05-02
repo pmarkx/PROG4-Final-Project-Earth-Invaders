@@ -21,11 +21,30 @@ namespace Logic.Models
             maxY = indexY;
             MapList = new List<GameObject>();
         }
+
+        public MapBackedByList(StreamReader streamReader, Player player)
+        {
+            var (MapsizeX, MapsizeY) = streamReader.ReadLine().Split(",") switch
+            {
+                var a => (int.Parse(a[0]), int.Parse(a[1])),
+            };
+            maxX = MapsizeX;
+            maxY = MapsizeY;
+            MapList = new List<GameObject>();
+
+            PopulateMapFromStreamReader(streamReader, player);
+        }
         public GameObject this[int index1, int index2]
         {
             get
             {
-                return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
+                var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
+                if (moreThanOneQuery.Count() > 1)
+                {
+                    return moreThanOneQuery.OrderByDescending(x => x.Priority).First();
+                }
+                else
+                    return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
             }
             set
             {
@@ -80,9 +99,6 @@ namespace Logic.Models
                     {
                         switch (line[j])
                         {
-                            case 'f':
-                                //this[i, j] = new Floor(i, j);
-                                break;
                             case 'm':
                                 this[i, j] = new Mine(i, j);
                                 break;
@@ -94,6 +110,8 @@ namespace Logic.Models
                                 break;
                             case 'p':
                                 this[i, j] = thePlayer;
+                                break;
+                            default:
                                 break;
                         }
                     }
@@ -121,6 +139,37 @@ namespace Logic.Models
         {
             Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
             MapList.Add(enemy);
+        }
+
+        public void SaveState(StreamWriter streamWriter)
+        {
+            streamWriter.WriteLine($"{GetLength(0)},{GetLength(1)}");
+            for (int i = 0; i < GetLength(0); i++)
+            {
+                StringBuilder line = new StringBuilder();
+                for (int j = 0; j < GetLength(1); j++)
+                {
+                    switch (this[i, j])
+                    {
+                        case Enemy:
+                            line.Append('e');
+                            break;
+                        case Wall:
+                            line.Append('w');
+                            break;
+                        case Player:
+                            line.Append('p');
+                            break;
+                        case Mine:
+                            line.Append('m');
+                            break;
+                        default:
+                        case Floor:
+                            line.Append('f');
+                            break;
+                    }
+                }
+            }
         }
     }
 }

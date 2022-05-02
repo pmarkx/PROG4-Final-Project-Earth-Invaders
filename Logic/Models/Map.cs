@@ -77,7 +77,7 @@ namespace Logic.Models
                                 this[i, j] = new Floor(i, j);
                                 break;
                             case 'm':
-                                this[i, j] = new Mine(i, j);
+                                //this[i, j] = new Mine(i, j);
                                 break;
                             case 'w':
                                 this[i, j] = new Wall(i, j);

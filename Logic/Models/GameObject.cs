@@ -13,7 +13,12 @@ namespace Logic.Models
         public int Ammo { get; set; }
         public bool IsSolid { get; protected set; }
 
-        protected GameObject(int xPosition, int yPosition, string name, int life, bool weaponOn, int ammo, bool isSolid=true)
+        /// <summary>
+        /// The  Bigger The better.
+        /// </summary>
+        public abstract int Priority { get; }
+
+        protected GameObject(int xPosition, int yPosition, string name, int life, bool weaponOn, int ammo, bool isSolid = true)
         {
             XPosition = xPosition;
             YPosition = yPosition;
@@ -27,7 +32,7 @@ namespace Logic.Models
 
         public virtual void Tick()
         {
-            if (Life<=0)
+            if (Life <= 0)
             {
                 IsLive = false;
             }
