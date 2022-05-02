@@ -26,6 +26,8 @@ namespace UI.Controller
             control.EnemySpawnInterval = Constants.EnemySpawnInterval;
             control.BulletMoveInterval = Constants.BulletMoveInterval;
             control.ShootingBetweenInterval = Constants.ShootingBetweenInterval;
+            control.LifeSpawnInterval = Constants.LifeSpawnInterval;
+            control.AmmoSpawnInterval = Constants.AmmoSpawnInterval;
             control.GameTickHappened += Control_GameTickHappened;
             UITimer = new DispatcherTimer();
             UITimer.Interval = Constants.UIRefreshInterval;
@@ -34,7 +36,7 @@ namespace UI.Controller
         public void RefreshScoreTable(MainWindowViewModel vm)
         {
             vm.ScoreText = $"Score: {control.Score}";
-            vm.LifeText =$"Lifes: {control.Life}";
+            vm.LifeText = $"Lifes: {control.Life}";
             vm.AmmoText = $"Ammo: {control.Ammo}";
         }
 

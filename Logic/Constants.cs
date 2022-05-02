@@ -20,6 +20,9 @@ namespace Logic
         public static TimeSpan EnemySpawnInterval = new TimeSpan(0, 0, 0, 0,399);
         public static TimeSpan BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 199);
         public static TimeSpan ShootingBetweenInterval = new TimeSpan(0, 0, 0, 2);
+        public static TimeSpan LifeSpawnInterval = new TimeSpan(0, 0, 0, 10);
+        public static TimeSpan AmmoSpawnInterval = new TimeSpan(0, 0, 0, 4);
+
         public static TimeSpan UIRefreshInterval = new TimeSpan(3);
         public static long DefaultScore = 0;
         public static int DefaultLifes = 3;

@@ -132,5 +132,15 @@ namespace Logic.Models
         {
             throw new NotImplementedException();
         }
+
+        public void LifeRewardRushing()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AmmoRewardRushing()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

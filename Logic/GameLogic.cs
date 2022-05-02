@@ -23,6 +23,9 @@ namespace Logic
         public TimeSpan EnemySpawnInterval { get; set; }
         public TimeSpan BulletMoveInterval { get; set; }
         public TimeSpan ShootingBetweenInterval { get; set; }
+        public TimeSpan LifeSpawnInterval { get; set; }
+        public TimeSpan AmmoSpawnInterval { get; set; }
+
 
         public bool GameOver { get; private set; }
 
@@ -38,11 +41,16 @@ namespace Logic
         private Timer enemySpawnTimer;
         private Timer bulletMoveTimer;
         private Timer shootingBetweenTimer;
+        private Timer lifeSpawnTimer;
+        private Timer ammoSpawnTimer;
+
 
         private bool enemyMoves = false;
         private bool enemySpawns = false;
         private bool bulletMoves = false;
         private bool canShoot = false;
+        private bool lifeSpawn = false;
+        private bool ammoSpawn = false;
         public event TickHappened GameTickHappened;
         public static int EnemyDied = 0;
 
@@ -70,14 +78,29 @@ namespace Logic
             enemySpawnTimer = new Timer();
             bulletMoveTimer = new Timer();
             shootingBetweenTimer = new Timer();
+            lifeSpawnTimer= new Timer();
+            ammoSpawnTimer= new Timer();
             gameTimer.Elapsed += GameTimer_Tick;
             enemyTimer.Elapsed += EnemyTimer_Tick;
             enemySpawnTimer.Elapsed += EnemySpawnTimer_Tick;
             bulletMoveTimer.Elapsed += BulletMoveTimer_Tick;
             shootingBetweenTimer.Elapsed += ShootingBetweenTimer_Tick;
+            lifeSpawnTimer.Elapsed += LifeSpawnTimer_Elapsed;
+            ammoSpawnTimer.Elapsed += AmmoSpawnTimer_Elapsed;
             CopyTimerIntervals();
             StartTimers();
         }
+
+ 
+        private void LifeSpawnTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            lifeSpawn = true;
+        }
+        private void AmmoSpawnTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            ammoSpawn = true;
+        }
+
 
         private void ShootingBetweenTimer_Tick(object? sender, EventArgs e)
         {
@@ -106,6 +129,8 @@ namespace Logic
             enemySpawnTimer.Interval = EnemySpawnInterval.TotalMilliseconds;
             bulletMoveTimer.Interval = BulletMoveInterval.TotalMilliseconds;
             shootingBetweenTimer.Interval = ShootingBetweenInterval.TotalMilliseconds;
+            lifeSpawnTimer.Interval=LifeSpawnInterval.TotalMilliseconds;
+            ammoSpawnTimer.Interval= AmmoSpawnInterval.TotalMilliseconds;
         }
 
         private void StopTimers()
@@ -115,6 +140,8 @@ namespace Logic
             enemySpawnTimer.Stop();
             bulletMoveTimer.Stop();
             shootingBetweenTimer.Stop();
+            lifeSpawnTimer.Stop();
+            ammoSpawnTimer.Stop();
         }
         private void StartTimers()
         {
@@ -123,6 +150,8 @@ namespace Logic
             enemySpawnTimer.Start();
             bulletMoveTimer.Start();
             shootingBetweenTimer.Start();
+            lifeSpawnTimer.Start();
+            ammoSpawnTimer.Start();
         }
         //TODO: Create EnumWithActions
         public void Move(Constants.Directions direction)
@@ -169,6 +198,15 @@ namespace Logic
                 {
                     Map.EnemyRushing();
                     enemySpawns = false;
+                }
+                if (lifeSpawn)
+                {
+                    Map.LifeRewardRushing();
+                    lifeSpawn = false;
+                }
+                if (ammoSpawn)
+                {
+                    
                 }
                 if (lastMove != Constants.Directions.nowhere)
                 {

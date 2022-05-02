@@ -157,6 +157,14 @@ namespace Logic.Models
                 MapList.Add(lifeReward);
             }
         }
+        public void AmmoRewardRushing()
+        {
+            lock (this)
+            {
+                LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
+                MapList.Add(lifeReward);
+            }
+        }
         public void SpawnSomething(GameObject gameObject)
         {
             lock (this)
@@ -203,5 +211,7 @@ namespace Logic.Models
             streamWriter.WriteLine(Score);
             streamWriter.WriteLine(Lifes);
         }
+
+
     }
 }
