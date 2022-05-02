@@ -38,7 +38,7 @@ namespace Logic.Models
         {
             get
             {
-                lock (MapList)
+                lock (this)
                 {
                     var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
                     if (moreThanOneQuery.Count() > 1)
