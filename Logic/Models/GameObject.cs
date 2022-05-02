@@ -37,23 +37,23 @@ namespace Logic.Models
                 IsLive = false;
             }
         }
-        public virtual void Move(Directions direction)
+        public virtual void Move(Constants.Directions direction)
         {
             switch (direction)
             {
-                case Directions.up:
+                case Constants.Directions.up:
                     XPosition--;
                     break;
-                case Directions.down:
+                case Constants.Directions.down:
                     XPosition++;
                     break;
-                case Directions.left:
+                case Constants.Directions.left:
                     YPosition--;
                     break;
-                case Directions.right:
+                case Constants.Directions.right:
                     YPosition++;
                     break;
-                case Directions.nowhere:
+                case Constants.Directions.nowhere:
                 default:
                     break;
             }

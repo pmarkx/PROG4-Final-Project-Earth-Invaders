@@ -21,14 +21,14 @@ namespace UI.Controller
         public GameController(IGameControl control)
         {
             this.control = control;
-            control.GameTickInterval = new TimeSpan(0,0,0,0,101);
-            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0, 300);
-            control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 0,300);
-            control.BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 242);
-            control.ShootingBetweenInterval = new TimeSpan(0, 0, 0, 1);
+            control.GameTickInterval = Constants.GameTickInterval;
+            control.EnemyMovementInterval = Constants.EnemyMovementInterval;
+            control.EnemySpawnInterval = Constants.EnemySpawnInterval;
+            control.BulletMoveInterval = Constants.BulletMoveInterval;
+            control.ShootingBetweenInterval = Constants.ShootingBetweenInterval;
             control.GameTickHappened += Control_GameTickHappened;
             UITimer = new DispatcherTimer();
-            UITimer.Interval=new TimeSpan(3);
+            UITimer.Interval = Constants.UIRefreshInterval;
             control.StartGame();
         }
         public void RefreshScoreTable(MainWindowViewModel vm)
@@ -48,10 +48,10 @@ namespace UI.Controller
             switch (key)
             {
                 case Key.Up:
-                    control.Move(Directions.up);
+                    control.Move(Constants.Directions.up);
                     break;
                 case Key.Down:
-                    control.Move(Directions.down);
+                    control.Move(Constants.Directions.down);
                     break;
                 case Key.Space:
                     control.Shoot();

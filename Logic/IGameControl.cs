@@ -9,7 +9,7 @@ namespace Logic
 {
     public interface IGameControl
     {
-        void Move(Directions direction);
+        void Move(Constants.Directions direction);
         void Shoot();
 
         TimeSpan GameTickInterval { get; set; }
