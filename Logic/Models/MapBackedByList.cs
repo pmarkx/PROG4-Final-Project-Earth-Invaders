@@ -38,13 +38,16 @@ namespace Logic.Models
         {
             get
             {
-                var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
-                if (moreThanOneQuery.Count() > 1)
+                lock (MapList)
                 {
-                    return moreThanOneQuery.OrderByDescending(x => x.Priority).First();
+                    var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
+                    if (moreThanOneQuery.Count() > 1)
+                    {
+                        return moreThanOneQuery.OrderByDescending(x => x.Priority).First();
+                    }
+                    else
+                        return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
                 }
-                else
-                    return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
             }
             set
             {
@@ -90,31 +93,31 @@ namespace Logic.Models
 
         public void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer)
         {
-            
-                for (int i = 0; i < GetLength(0); i++)
+
+            for (int i = 0; i < GetLength(0); i++)
+            {
+                string line = streamReader.ReadLine();
+                for (int j = 0; j < GetLength(1); j++)
                 {
-                    string line = streamReader.ReadLine();
-                    for (int j = 0; j < GetLength(1); j++)
+                    switch (line[j])
                     {
-                        switch (line[j])
-                        {
-                            case 'm':
-                                this[i, j] = new Mine(i, j);
-                                break;
-                            case 'w':
-                                this[i, j] = new Wall(i, j);
-                                break;
-                            case 'e':
-                                this[i, j] = new Enemy(i, j);
-                                break;
-                            case 'p':
-                                this[i, j] = thePlayer;
-                                break;
-                            default:
-                                break;
-                        }
+                        case 'm':
+                            this[i, j] = new Mine(i, j);
+                            break;
+                        case 'w':
+                            this[i, j] = new Wall(i, j);
+                            break;
+                        case 'e':
+                            this[i, j] = new Enemy(i, j);
+                            break;
+                        case 'p':
+                            this[i, j] = thePlayer;
+                            break;
+                        default:
+                            break;
                     }
                 }
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -173,7 +176,7 @@ namespace Logic.Models
                 }
             }
         }
-        public void SaveState(StreamWriter streamWriter, long Score,int Lifes)
+        public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
         {
             this.SaveState(streamWriter);
             streamWriter.WriteLine(Score);
