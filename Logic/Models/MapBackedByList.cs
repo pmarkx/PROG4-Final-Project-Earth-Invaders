@@ -90,31 +90,34 @@ namespace Logic.Models
 
         public void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer)
         {
-            
-                for (int i = 0; i < GetLength(0); i++)
+
+            for (int i = 0; i < GetLength(0); i++)
+            {
+                string line = streamReader.ReadLine();
+                for (int j = 0; j < GetLength(1); j++)
                 {
-                    string line = streamReader.ReadLine();
-                    for (int j = 0; j < GetLength(1); j++)
+                    switch (line[j])
                     {
-                        switch (line[j])
-                        {
-                            case 'm':
-                                this[i, j] = new Mine(i, j);
-                                break;
-                            case 'w':
-                                this[i, j] = new Wall(i, j);
-                                break;
-                            case 'e':
-                                this[i, j] = new Enemy(i, j);
-                                break;
-                            case 'p':
-                                this[i, j] = thePlayer;
-                                break;
-                            default:
-                                break;
-                        }
+                        case 'm':
+                            this[i, j] = new Mine(i, j);
+                            break;
+                        case 'w':
+                            this[i, j] = new Wall(i, j);
+                            break;
+                        case 'e':
+                            this[i, j] = new Enemy(i, j);
+                            break;
+                        case 'l':
+                            this[i, j] = new LifeReward(i, j);
+                            break;
+                        case 'p':
+                            this[i, j] = thePlayer;
+                            break;
+                        default:
+                            break;
                     }
                 }
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -165,6 +168,9 @@ namespace Logic.Models
                         case Mine:
                             line.Append('m');
                             break;
+                        case LifeReward:
+                            line.Append('l');
+                            break;
                         default:
                         case Floor:
                             line.Append('f');
@@ -173,7 +179,7 @@ namespace Logic.Models
                 }
             }
         }
-        public void SaveState(StreamWriter streamWriter, long Score,int Lifes)
+        public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
         {
             this.SaveState(streamWriter);
             streamWriter.WriteLine(Score);

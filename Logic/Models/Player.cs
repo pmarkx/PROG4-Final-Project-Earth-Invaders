@@ -20,7 +20,7 @@ namespace Logic.Models
         {
             if (touchedWithEnemy)
             {
-                Life--;
+                Life=Life-1;
                 touchedWithEnemy = false;
             }
             base.Tick();
@@ -34,10 +34,13 @@ namespace Logic.Models
                 {
                     case Enemy e:
                         touchedWithEnemy = true;
-                        e.Life=0;
+                        e.IsLive = false;
                         break;
                     case Wall w:
                         Life = 0;
+                        break;
+                    case LifeReward l:
+                        Life++;
                         break;
                     default:
                         break;
