@@ -34,13 +34,14 @@ namespace GUI_20212202_DCQEB4
 
         private void Controller_TickTick()
         {
-           // display.InvalidateVisual();
+            display.InvalidateVisual();
+            
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
-           // display.InvalidateVisual();
+            //display.InvalidateVisual();
 
         }
 

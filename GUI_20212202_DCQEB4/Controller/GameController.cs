@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Input;
+using System.Windows.Threading;
 using UI.Renderer;
 using static Logic.GameLogic;
 
@@ -18,22 +19,20 @@ namespace UI.Controller
         public GameController(IGameControl control)
         {
             this.control = control;
-            Timer myTimer = new Timer();
-            myTimer.Elapsed += new ElapsedEventHandler(DisplayTimeEvent);
-            myTimer.Interval = 1000; // 1000 ms is one second
-            myTimer.Start();
-            
+            DispatcherTimer gameTime = new DispatcherTimer();
+            gameTime.Tick += GameTimer_Tick;
+            gameTime.Interval = new TimeSpan(1); // 1 tick is 100ms
+            gameTime.Start();        
+        }
+
+        private void GameTimer_Tick(object? sender, EventArgs e)
+        {
+            control.GameTick();
+            TickTick.Invoke();
         }
 
         public delegate void TickHappened();
         public event TickHappened TickTick; 
-        private void DisplayTimeEvent(object sender, ElapsedEventArgs e)
-        {
-            control.GameTick();
-            TickTick.SafeInvoke(sender,e);
-            //TODO eventet here ahova lehet íratkozni
-
-        }
 
         public void KeyPressed(Key key)
         {

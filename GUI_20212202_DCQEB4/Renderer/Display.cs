@@ -28,11 +28,11 @@ namespace UI.Renderer
             this.model = model;
         }
 
-        protected  void OnRender(DrawingContext drawingContext)
+        protected override void OnRender(DrawingContext drawingContext)
         {
-            ;
+
             base.OnRender(drawingContext);
-            if (model != null&&size.Width > 50 && size.Height > 50)
+            if (model != null && size.Width > 50 && size.Height > 50)
             {
                 double rectWidth = size.Width / model.Map.GetLength(0);
                 double rectHeight = size.Height / model.Map.GetLength(1);
@@ -47,26 +47,26 @@ namespace UI.Renderer
                     for (int j = 0; j < model.Map.GetLength(1); j++)
                     {
                         ImageBrush brush = new ImageBrush();
-                       
+
                         switch (model.Map[i, j])
                         {
                             case Player:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(File.OpenRead(folder+"player.png")));
+                                    (BitmapFrame.Create(File.OpenRead(folder + "player.png")));
                                 break;
                             case Wall:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(File.OpenRead(folder+"wall.png")));
+                                    (BitmapFrame.Create(File.OpenRead(folder + "wall.png")));
                                 break;
                             case Floor:
                                 break;
                             case Mine:
                                 brush = new ImageBrush
-                                    ( BitmapFrame.Create(File.OpenRead(folder+"mine.bmp")));
+                                    (BitmapFrame.Create(File.OpenRead(folder + "mine.bmp")));
                                 break;
                             case Enemy:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(File.OpenRead(folder+"enemy.png")));
+                                    (BitmapFrame.Create(File.OpenRead(folder + "enemy.png")));
                                 break;
                             default:
                                 break;
