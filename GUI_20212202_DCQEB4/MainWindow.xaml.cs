@@ -27,7 +27,6 @@ namespace GUI_20212202_DCQEB4
         public MainWindow()
         {
             InitializeComponent();
-            myMediaElement.Play();
             GameLogic logic = new GameLogic();
             display.SetupModel(logic);
             controller = new GameController(logic);
