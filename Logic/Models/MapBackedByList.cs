@@ -38,7 +38,7 @@ namespace Logic.Models
         {
             get
             {
-                lock (MapList)
+                lock (this)
                 {
                     var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
                     if (moreThanOneQuery.Count() > 1)
@@ -59,11 +59,12 @@ namespace Logic.Models
 
         public void CheckDie()
         {
-            for (int i = 0; i < MapList.Count; i++)
-            {
-                if (!MapList[i].IsLive)
-                    MapList.Remove(MapList[i]);
-            }
+            lock (this)
+                for (int i = 0; i < MapList.Count; i++)
+                {
+                    if (!MapList[i].IsLive)
+                        MapList.Remove(MapList[i]);
+                }
         }
 
         public IEnumerator<GameObject> GetEnumerator()
@@ -141,18 +142,25 @@ namespace Logic.Models
 
         public void EnemyRushing()
         {
-            Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
-            MapList.Add(enemy);
+            lock (this)
+            {
+                Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
+                MapList.Add(enemy);
+            }
         }
 
         public void LifeRewardRushing()
         {
-            LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
-            MapList.Add(lifeReward);
+            lock (this)
+            {
+                LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
+                MapList.Add(lifeReward);
+            }
         }
         public void SpawnSomething(GameObject gameObject)
         {
-            MapList.Add(gameObject);
+            lock (this)
+                MapList.Add(gameObject);
         }
 
         public void SaveState(StreamWriter streamWriter)
