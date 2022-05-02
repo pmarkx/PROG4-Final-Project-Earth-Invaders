@@ -6,17 +6,26 @@ using Logic.Models;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Logic
 {
+    public delegate void TickHappened();
+
     public class GameLogic : IGameModel, IGameControl
     {
 
         public static Player ThePlayer { get; }
         public IMap Map { get; set; }
-        private Directions lastMove = Directions.nowhere;
+        public TimeSpan GameTickInterval { get; set; }
+        public TimeSpan EnemyMovementInterval { get; set; }
 
-        
+        private Directions lastMove = Directions.nowhere;
+        private DispatcherTimer gameTimer;
+        private DispatcherTimer enemyTimer;
+        private bool enemyMoves = false;
+        public event TickHappened GameTickHappened;
+
 
         private GameObject ConvertToEnum(char v, int x, int y)
         {
@@ -47,27 +56,49 @@ namespace Logic
             };
             Map = new MapBackedByList(MapsizeX, MapsizeY);
             Map.PopulateMapFromStreamReader(streamReader, ThePlayer);
+
+        }
+        public void StartGame()
+        {
+            gameTimer = new DispatcherTimer();
+            enemyTimer = new DispatcherTimer();
+            gameTimer.Interval = GameTickInterval;
+            enemyTimer.Interval = EnemyMovementInterval;
+            gameTimer.Tick += GameTimer_Tick;
+            enemyTimer.Tick += EnemyTimer_Tick;
+            gameTimer.Start();
+            enemyTimer.Start();
         }
 
-        public void GameTick()
+        private void EnemyTimer_Tick(object? sender, EventArgs e)
         {
-            foreach (var item in Map)
+            enemyMoves = true;
+        }
+
+        private void GameTimer_Tick(object? sender, EventArgs e)
+        {
+            if (enemyMoves)
             {
-                item.Tick();
+                foreach (var item in Map)
+                {
+                    item.Tick();
+                }
+                enemyMoves = false;
             }
-            if (lastMove!=Directions.nowhere)
+            if (lastMove != Directions.nowhere)
             {
                 DoMove(lastMove);
                 lastMove = Directions.nowhere;
             }
             Map.CollisionDetect();
+            GameTickHappened?.Invoke();
         }
 
         //TODO: Create EnumWithActions
         public void Move(Directions direction)
         {
             lastMove = direction;
-            
+
         }
         private void DoMove(Directions direction)
         {
@@ -78,7 +109,7 @@ namespace Logic
         {
             return Map.IndexOf(x => x is Player);
         }
-       
+
 
     }
 }

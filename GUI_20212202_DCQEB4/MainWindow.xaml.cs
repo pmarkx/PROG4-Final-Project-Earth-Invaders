@@ -29,7 +29,7 @@ namespace GUI_20212202_DCQEB4
             GameLogic logic = new GameLogic();
             display.SetupModel(logic);
             controller = new GameController(logic);
-            controller.TickTick += Controller_TickTick;
+            controller.GameTickHappened += Controller_TickTick;
         }
 
         private void Controller_TickTick()

@@ -7,7 +7,7 @@
         }
         public override void Tick()
         {
-            XPosition--;
+            YPosition--;
             if (Life<=0)
             {
                 IsLive = false;

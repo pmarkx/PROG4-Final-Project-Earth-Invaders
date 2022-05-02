@@ -15,24 +15,21 @@ namespace UI.Controller
     internal class GameController
     {
         IGameControl control;
+        public event TickHappened GameTickHappened;
 
         public GameController(IGameControl control)
         {
             this.control = control;
-            DispatcherTimer gameTime = new DispatcherTimer();
-            gameTime.Tick += GameTimer_Tick;
-            gameTime.Interval = new TimeSpan(1); // 1 tick is 100ms
-            gameTime.Start();        
+            control.GameTickInterval = new TimeSpan(1);
+            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 1);
+            control.GameTickHappened += Control_GameTickHappened;
+            control.StartGame();
         }
 
-        private void GameTimer_Tick(object? sender, EventArgs e)
+        private void Control_GameTickHappened()
         {
-            control.GameTick();
-            TickTick.Invoke();
+            this.GameTickHappened?.Invoke();
         }
-
-        public delegate void TickHappened();
-        public event TickHappened TickTick; 
 
         public void KeyPressed(Key key)
         {

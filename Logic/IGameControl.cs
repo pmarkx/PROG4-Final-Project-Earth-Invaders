@@ -10,6 +10,10 @@ namespace Logic
     public interface IGameControl
     {
         void Move(Directions direction);
-        void GameTick();
+
+        TimeSpan GameTickInterval { get; set; }
+        TimeSpan EnemyMovementInterval { get; set; }
+        public event TickHappened GameTickHappened;
+        public void StartGame();
     }
 }
