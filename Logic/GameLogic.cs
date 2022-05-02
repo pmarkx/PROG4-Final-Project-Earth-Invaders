@@ -7,6 +7,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Timers;
 
 namespace Logic
 {
@@ -20,14 +21,20 @@ namespace Logic
         public TimeSpan GameTickInterval { get; set; }
         public TimeSpan EnemyMovementInterval { get; set; }
         public TimeSpan EnemySpawnInterval { get; set; }
-
+        public TimeSpan BulletMoveInterval { get; set; }
+        public TimeSpan ShootingBetweenInterval { get; set; }
 
         private Directions lastMove = Directions.nowhere;
-        private DispatcherTimer gameTimer;
-        private DispatcherTimer enemyTimer;
-        private DispatcherTimer enemySpawnTimer;
+        private Timer gameTimer;
+        private Timer enemyTimer;
+        private Timer enemySpawnTimer;
+        private Timer bulletMoveTimer;
+        private Timer shootingBetweenTimer;
+
         private bool enemyMoves = false;
         private bool enemySpawns = false;
+        private bool bulletMoves = false;
+        private bool canShoot = false;
         public event TickHappened GameTickHappened;
 
 
@@ -58,16 +65,28 @@ namespace Logic
         }
         public void StartGame()
         {
-            gameTimer = new DispatcherTimer();
-            enemyTimer = new DispatcherTimer();
-            enemySpawnTimer = new DispatcherTimer();
-            gameTimer.Interval = GameTickInterval;
-            enemyTimer.Interval = EnemyMovementInterval;
-            enemySpawnTimer.Interval = EnemySpawnInterval;
-            gameTimer.Tick += GameTimer_Tick;
-            enemyTimer.Tick += EnemyTimer_Tick;
-            enemySpawnTimer.Tick += EnemySpawnTimer_Tick;
+            gameTimer = new Timer();
+            enemyTimer = new Timer();
+            enemySpawnTimer = new Timer();
+            bulletMoveTimer = new Timer();
+            shootingBetweenTimer = new Timer();
+            gameTimer.Elapsed += GameTimer_Tick;
+            enemyTimer.Elapsed += EnemyTimer_Tick;
+            enemySpawnTimer.Elapsed += EnemySpawnTimer_Tick;
+            bulletMoveTimer.Elapsed += BulletMoveTimer_Tick;
+            shootingBetweenTimer.Elapsed += ShootingBetweenTimer_Tick;
+            CopyTimerIntervals();
             StartTimers();
+        }
+
+        private void ShootingBetweenTimer_Tick(object? sender, EventArgs e)
+        {
+            canShoot = true;
+        }
+
+        private void BulletMoveTimer_Tick(object? sender, EventArgs e)
+        {
+            bulletMoves = true;
         }
 
         private void EnemySpawnTimer_Tick(object? sender, EventArgs e)
@@ -77,10 +96,16 @@ namespace Logic
         public void RefreshTimers()
         {
             StopTimers();
-            gameTimer.Interval = GameTickInterval;
-            enemyTimer.Interval = EnemyMovementInterval;
-            enemySpawnTimer.Interval = EnemySpawnInterval;
+            CopyTimerIntervals();
             StartTimers();
+        }
+        private void CopyTimerIntervals()
+        {
+            gameTimer.Interval = GameTickInterval.TotalMilliseconds;
+            enemyTimer.Interval = EnemyMovementInterval.TotalMilliseconds;
+            enemySpawnTimer.Interval = EnemySpawnInterval.TotalMilliseconds;
+            bulletMoveTimer.Interval = BulletMoveInterval.TotalMilliseconds;
+            shootingBetweenTimer.Interval = ShootingBetweenInterval.TotalMilliseconds;
         }
 
         private void StopTimers()
@@ -88,12 +113,16 @@ namespace Logic
             gameTimer.Stop();
             enemyTimer.Stop();
             enemySpawnTimer.Stop();
+            bulletMoveTimer.Stop();
+            shootingBetweenTimer.Stop();
         }
         private void StartTimers()
         {
             gameTimer.Start();
             enemyTimer.Start();
             enemySpawnTimer.Start();
+            bulletMoveTimer.Start();
+            shootingBetweenTimer.Start();
         }
         //TODO: Create EnumWithActions
         public void Move(Directions direction)
@@ -111,12 +140,29 @@ namespace Logic
         {
             if (enemyMoves)
             {
-                foreach (var item in Map)
+                foreach (var item in Map.Where(x => x is Enemy))
                 {
                     item.Tick();
                 }
                 enemyMoves = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
             }
+            if (bulletMoves)
+            {
+                foreach (var item in Map.Where(x => x is Mine))
+                {
+                    item.Tick();
+                }
+                bulletMoves = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy)))
+            {
+                item.Tick();
+            }
+
             if (enemySpawns)
             {
                 Map.EnemyRushing();
@@ -143,6 +189,15 @@ namespace Logic
             return Map.IndexOf(x => x is Player);
         }
 
-
+        public void Shoot()
+        {
+            if (canShoot)
+            {
+                var (X, Y) = (ThePlayer.XPosition, ThePlayer.YPosition - 1);
+                Map.SpawnSomething(new Mine(X, Y));
+                canShoot = false;
+            }
+            
+        }
     }
 }

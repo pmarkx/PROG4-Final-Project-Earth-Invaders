@@ -16,14 +16,18 @@ namespace UI.Controller
     {
         IGameControl control;
         public event TickHappened GameTickHappened;
-
+        public DispatcherTimer UITimer;
         public GameController(IGameControl control)
         {
             this.control = control;
-            control.GameTickInterval = new TimeSpan(1);
-            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0,500);
+            control.GameTickInterval = new TimeSpan(0,0,0,0,100);
+            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0, 500);
             control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 1);
+            control.BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 250);
+            control.ShootingBetweenInterval = new TimeSpan(0, 0, 0, 1);
             control.GameTickHappened += Control_GameTickHappened;
+            UITimer = new DispatcherTimer();
+            UITimer.Interval=new TimeSpan(3);
             control.StartGame();
         }
 
@@ -41,6 +45,9 @@ namespace UI.Controller
                     break;
                 case Key.Down:
                     control.Move(Directions.down);
+                    break;
+                case Key.Space:
+                    control.Shoot();
                     break;
             }
         }

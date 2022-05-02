@@ -34,7 +34,7 @@ namespace Logic.Models
                 {
                     case Enemy e:
                         touchedWithEnemy = true;
-                        e.Life--;
+                        e.Life=0;
                         break;
                     case Wall w:
                         Life = 0;

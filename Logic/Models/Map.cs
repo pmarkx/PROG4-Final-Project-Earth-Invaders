@@ -117,5 +117,10 @@ namespace Logic.Models
         {
             throw new NotImplementedException();
         }
+
+        public void SpawnSomething(GameObject gameObject)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

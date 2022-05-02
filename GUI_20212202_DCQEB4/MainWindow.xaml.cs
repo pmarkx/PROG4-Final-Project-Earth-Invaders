@@ -29,13 +29,20 @@ namespace GUI_20212202_DCQEB4
             GameLogic logic = new GameLogic();
             display.SetupModel(logic);
             controller = new GameController(logic);
-            controller.GameTickHappened += Controller_TickTick;
+            controller.UITimer.Tick += UITimer_Tick;
+            //controller.GameTickHappened += Controller_GameTickHappened;
+            controller.UITimer.Start();
         }
 
-        private void Controller_TickTick()
+        private void UITimer_Tick(object? sender, EventArgs e)
         {
             display.InvalidateVisual();
-            
+
+        }
+        private void Controller_GameTickHappened()
+        {
+            display.InvalidateVisual();
+
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -48,13 +55,13 @@ namespace GUI_20212202_DCQEB4
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             display.Resize(new Size(grid.ActualWidth, grid.ActualHeight));
-            //display.InvalidateVisual();
-            ;
+            e.Handled = true;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             controller.KeyPressed(e.Key);
+            e.Handled = true;
            // display.InvalidateVisual();
         }
     }

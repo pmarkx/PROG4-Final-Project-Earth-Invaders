@@ -10,10 +10,15 @@ namespace Logic
     public interface IGameControl
     {
         void Move(Directions direction);
+        void Shoot();
 
         TimeSpan GameTickInterval { get; set; }
         TimeSpan EnemyMovementInterval { get; set; }
         TimeSpan EnemySpawnInterval { get; set; }
+        TimeSpan BulletMoveInterval { get; set; }
+        TimeSpan ShootingBetweenInterval { get; set; }
+
+
         public event TickHappened GameTickHappened;
         public void RefreshTimers();
         public void StartGame();

@@ -140,6 +140,10 @@ namespace Logic.Models
             Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
             MapList.Add(enemy);
         }
+        public void SpawnSomething(GameObject gameObject)
+        {
+            MapList.Add(gameObject);
+        }
 
         public void SaveState(StreamWriter streamWriter)
         {
@@ -171,5 +175,6 @@ namespace Logic.Models
                 }
             }
         }
+
     }
 }

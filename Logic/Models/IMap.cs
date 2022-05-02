@@ -15,5 +15,6 @@ namespace Logic.Models
         void CheckDie();
         public void CollisionDetect();
         public void EnemyRushing();
+        public void SpawnSomething(GameObject gameObject);
     }
 }
