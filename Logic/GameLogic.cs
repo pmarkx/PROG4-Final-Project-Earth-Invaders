@@ -70,7 +70,7 @@ namespace Logic
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : 0;
-
+            ThePlayer.Life = !streamReader.EndOfStream ?int.Parse(streamReader.ReadLine()) : 3;
         }
         public void StartGame()
         {

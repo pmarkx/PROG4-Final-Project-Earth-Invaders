@@ -122,5 +122,15 @@ namespace Logic.Models
         {
             throw new NotImplementedException();
         }
+
+        public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SaveState(StreamWriter streamWriter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

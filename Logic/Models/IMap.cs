@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Logic.Models
 {
-    public interface IMap :IEnumerable<GameObject>
+    public interface IMap : IEnumerable<GameObject>
     {
         GameObject this[int index1, int index2] { get; set; }
 
@@ -13,8 +13,10 @@ namespace Logic.Models
         (int X, int Y) IndexOf(Func<GameObject, bool> condition);
         void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer);
         void CheckDie();
-        public void CollisionDetect();
-        public void EnemyRushing();
-        public void SpawnSomething(GameObject gameObject);
+        void CollisionDetect();
+        void EnemyRushing();
+        void SpawnSomething(GameObject gameObject);
+        void SaveState(StreamWriter streamWriter, long Score, int Lifes);
+        void SaveState(StreamWriter streamWriter);
     }
 }
