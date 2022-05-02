@@ -38,13 +38,16 @@ namespace Logic.Models
         {
             get
             {
-                var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
-                if (moreThanOneQuery.Count() > 1)
+                lock (MapList)
                 {
-                    return moreThanOneQuery.OrderByDescending(x => x.Priority).First();
+                    var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
+                    if (moreThanOneQuery.Count() > 1)
+                    {
+                        return moreThanOneQuery.OrderByDescending(x => x.Priority).First();
+                    }
+                    else
+                        return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
                 }
-                else
-                    return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
             }
             set
             {

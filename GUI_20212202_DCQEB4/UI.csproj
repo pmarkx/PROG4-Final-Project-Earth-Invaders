@@ -19,6 +19,7 @@
     <None Remove="Renderer\images\enemy.png" />
     <None Remove="Renderer\images\mine.bmp" />
     <None Remove="Renderer\images\mine.png" />
+    <None Remove="Renderer\images\music.mp3" />
     <None Remove="Renderer\images\player.png" />
     <None Remove="Renderer\images\player.svg" />
     <None Remove="Renderer\images\wall.png" />
@@ -35,6 +36,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Renderer\images\mine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\music.mp3">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Renderer\images\player.png">

@@ -20,7 +20,7 @@ namespace Logic
         public bool GameOver { get; }
         public long Score { get; }
         public long Life { get; }
-
+        public long Ammo { get; }
 
         public event TickHappened GameTickHappened;
         public void RefreshTimers();

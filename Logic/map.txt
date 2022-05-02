@@ -1,9 +1,9 @@
 ﻿6,6
 wwwwww
 ffffff
-pfffef
-fffflf
-ffffef
+pfffff
+ffffff
+ffffff
 wwwwww
-10000
 10
+3

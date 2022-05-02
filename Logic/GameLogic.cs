@@ -30,6 +30,8 @@ namespace Logic
 
         public long Life { get; private set; }
 
+        public long Ammo { get; private set; }
+
         private Directions lastMove = Directions.nowhere;
         private Timer gameTimer;
         private Timer enemyTimer;
@@ -62,7 +64,7 @@ namespace Logic
 
         static GameLogic()
         {
-            ThePlayer = new Player(0, 0, 3, 0);
+            ThePlayer = new Player(0, 0, 3, 3);
         }
         public GameLogic()
         {
@@ -70,7 +72,7 @@ namespace Logic
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : 0;
-            ThePlayer.Life = !streamReader.EndOfStream ?int.Parse(streamReader.ReadLine()) : 3;
+            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : 3;
         }
         public void StartGame()
         {
@@ -147,52 +149,56 @@ namespace Logic
 
         private void GameTimer_Tick(object? sender, EventArgs e)
         {
-            if (enemyMoves)
+            lock (Map)
             {
-                foreach (var item in Map.Where(x => x is Enemy))
+                if (enemyMoves)
+                {
+                    foreach (var item in Map.Where(x => x is Enemy))
+                    {
+                        item.Tick();
+                    }
+                    enemyMoves = false;
+                    Map.CollisionDetect();
+                    Map.CheckDie();
+                }
+                if (bulletMoves)
+                {
+                    foreach (var item in Map.Where(x => x is Mine))
+                    {
+                        item.Tick();
+                    }
+                    bulletMoves = false;
+                    Map.CollisionDetect();
+                    Map.CheckDie();
+                }
+                foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy)))
                 {
                     item.Tick();
                 }
-                enemyMoves = false;
-                Map.CollisionDetect();
-                Map.CheckDie();
-            }
-            if (bulletMoves)
-            {
-                foreach (var item in Map.Where(x => x is Mine))
-                {
-                    item.Tick();
-                }
-                bulletMoves = false;
-                Map.CollisionDetect();
-                Map.CheckDie();
-            }
-            foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy)))
-            {
-                item.Tick();
-            }
 
-            if (enemySpawns)
-            {
-                Map.EnemyRushing();
-                enemySpawns = false;
-            }
-            if (lastMove != Directions.nowhere)
-            {
-                DoMove(lastMove);
-                lastMove = Directions.nowhere;
-            }
-            if (!ThePlayer.IsLive)
-                GameOverTrigger();
-            Map.CollisionDetect();
-            Map.CheckDie();
-            GameTickHappened?.Invoke();
-            Score += 10;
-            Life = ThePlayer.Life;
-            if (GameLogic.EnemyDied > 0)
-            {
-                Score += GameLogic.EnemyDied * 300;
-                GameLogic.EnemyDied=0;
+                if (enemySpawns)
+                {
+                    Map.EnemyRushing();
+                    enemySpawns = false;
+                }
+                if (lastMove != Directions.nowhere)
+                {
+                    DoMove(lastMove);
+                    lastMove = Directions.nowhere;
+                }
+                if (!ThePlayer.IsLive)
+                    GameOverTrigger();
+                Map.CollisionDetect();
+                Map.CheckDie();
+                GameTickHappened?.Invoke();
+                Score += 10;
+                Life = ThePlayer.Life;
+                Ammo = ThePlayer.Ammo;
+                if (GameLogic.EnemyDied > 0)
+                {
+                    Score += GameLogic.EnemyDied * 300;
+                    GameLogic.EnemyDied = 0;
+                }
             }
         }
 
@@ -214,8 +220,9 @@ namespace Logic
 
         public void Shoot()
         {
-            if (canShoot)
+            if (canShoot && ThePlayer.Ammo >= 1)
             {
+                ThePlayer.Ammo--;
                 var (X, Y) = (ThePlayer.XPosition, ThePlayer.YPosition - 1);
                 Map.SpawnSomething(new Mine(X, Y));
                 canShoot = false;
