@@ -141,18 +141,25 @@ namespace Logic.Models
 
         public void EnemyRushing()
         {
-            Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
-            MapList.Add(enemy);
+            lock (this)
+            {
+                Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
+                MapList.Add(enemy);
+            }
         }
 
         public void LifeRewardRushing()
         {
-            LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
-            MapList.Add(lifeReward);
+            lock (this)
+            {
+                LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
+                MapList.Add(lifeReward);
+            }
         }
         public void SpawnSomething(GameObject gameObject)
         {
-            MapList.Add(gameObject);
+            lock (this)
+                MapList.Add(gameObject);
         }
 
         public void SaveState(StreamWriter streamWriter)

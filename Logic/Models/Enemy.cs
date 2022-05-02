@@ -1,4 +1,6 @@
-﻿namespace Logic.Models
+﻿using System.Collections.Generic;
+
+namespace Logic.Models
 {
     public class Enemy : DynamicObject
     {
@@ -12,7 +14,8 @@
         {
             YPosition--;
             base.Tick();
-           
+           if(YPosition < 0)
+                IsLive = false;
         }
     }
 }
