@@ -16,4 +16,10 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="startMap.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

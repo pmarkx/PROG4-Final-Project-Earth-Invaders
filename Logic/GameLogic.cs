@@ -54,10 +54,12 @@ namespace Logic
 
         public GameLogic()
         {
-            using StreamReader streamReader = new StreamReader("map.txt");
+            using StreamReader streamReader = new StreamReader("startMap.txt");
+
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
+
             ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
         }
 

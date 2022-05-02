@@ -194,6 +194,7 @@ namespace Logic.Models
                             break;
                     }
                 }
+                streamWriter.WriteLine(line.ToString());
             }
         }
         public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
