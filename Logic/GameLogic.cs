@@ -69,7 +69,7 @@ namespace Logic
             using StreamReader streamReader = new StreamReader("map.txt");
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-
+            Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : 0;
 
         }
         public void StartGame()

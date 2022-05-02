@@ -90,8 +90,7 @@ namespace Logic.Models
 
         public void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer)
         {
-            if (!streamReader.EndOfStream)
-            {
+            
                 for (int i = 0; i < GetLength(0); i++)
                 {
                     string line = streamReader.ReadLine();
@@ -116,7 +115,6 @@ namespace Logic.Models
                         }
                     }
                 }
-            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -174,6 +172,11 @@ namespace Logic.Models
                     }
                 }
             }
+        }
+        public void SaveState(StreamWriter streamWriter, long Score)
+        {
+            this.SaveState(streamWriter);
+            streamWriter.WriteLine(Score);
         }
 
     }
