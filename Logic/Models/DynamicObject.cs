@@ -7,7 +7,6 @@
         }
         public override void Tick()
         {
-            XPosition++;
             base.Tick();
         }
     }
