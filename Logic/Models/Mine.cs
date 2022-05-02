@@ -24,6 +24,7 @@ namespace Logic.Models
                     case Enemy e:
                         this.Life = 0;
                         e.Life = 0;
+                        GameLogic.EnemyDied++;
                         break;
                     case Wall w:
                         Life = 0;

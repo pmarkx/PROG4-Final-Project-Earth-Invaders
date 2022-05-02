@@ -8,6 +8,7 @@ using System.Timers;
 using System.Windows.Input;
 using System.Windows.Threading;
 using UI.Renderer;
+using UI.VM;
 using static Logic.GameLogic;
 
 namespace UI.Controller
@@ -21,7 +22,7 @@ namespace UI.Controller
         {
             this.control = control;
             control.GameTickInterval = new TimeSpan(0,0,0,0,101);
-            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0, 499);
+            control.EnemyMovementInterval = new TimeSpan(0, 0, 0, 0, 604);
             control.EnemySpawnInterval = new TimeSpan(0, 0, 0, 0,995);
             control.BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 242);
             control.ShootingBetweenInterval = new TimeSpan(0, 0, 0, 1);
@@ -29,6 +30,11 @@ namespace UI.Controller
             UITimer = new DispatcherTimer();
             UITimer.Interval=new TimeSpan(3);
             control.StartGame();
+        }
+        public void RefreshScoreTable(MainWindowViewModel vm)
+        {
+            vm.ScoreText = $"Score: {control.Score}";
+            vm.LifeText =$"Lifes: {control.Life}";
         }
 
         private void Control_GameTickHappened()

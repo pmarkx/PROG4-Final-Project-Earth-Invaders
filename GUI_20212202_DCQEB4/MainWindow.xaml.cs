@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UI.Controller;
+using UI.VM;
 
 namespace GUI_20212202_DCQEB4
 {
@@ -36,6 +37,7 @@ namespace GUI_20212202_DCQEB4
 
         private void UITimer_Tick(object? sender, EventArgs e)
         {
+            controller.RefreshScoreTable(this.DataContext as MainWindowViewModel);
             display.InvalidateVisual();
 
         }
@@ -62,7 +64,7 @@ namespace GUI_20212202_DCQEB4
         {
             controller.KeyPressed(e.Key);
             e.Handled = true;
-           // display.InvalidateVisual();
+            // display.InvalidateVisual();
         }
     }
 }

@@ -31,7 +31,6 @@ namespace UI.Renderer
         protected override void OnRender(DrawingContext drawingContext)
         {
 
-            base.OnRender(drawingContext);
             if (model != null && size.Width > 50 && size.Height > 50)
             {
                 double rectWidth = size.Width / model.Map.GetLength(0);

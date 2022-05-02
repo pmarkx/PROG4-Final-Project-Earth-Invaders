@@ -24,6 +24,12 @@ namespace Logic
         public TimeSpan BulletMoveInterval { get; set; }
         public TimeSpan ShootingBetweenInterval { get; set; }
 
+        public bool GameOver { get; private set; }
+
+        public long Score { get; private set; }
+
+        public long Life { get; private set; }
+
         private Directions lastMove = Directions.nowhere;
         private Timer gameTimer;
         private Timer enemyTimer;
@@ -36,6 +42,7 @@ namespace Logic
         private bool bulletMoves = false;
         private bool canShoot = false;
         public event TickHappened GameTickHappened;
+        public static int EnemyDied = 0;
 
 
         private GameObject ConvertToEnum(char v, int x, int y)
@@ -61,6 +68,8 @@ namespace Logic
         {
             using StreamReader streamReader = new StreamReader("map.txt");
             Map = new MapBackedByList(streamReader, ThePlayer);
+            GameOver = false;
+
 
         }
         public void StartGame()
@@ -173,9 +182,18 @@ namespace Logic
                 DoMove(lastMove);
                 lastMove = Directions.nowhere;
             }
+            if (!ThePlayer.IsLive)
+                GameOverTrigger();
             Map.CollisionDetect();
             Map.CheckDie();
             GameTickHappened?.Invoke();
+            Score += 10;
+            Life = ThePlayer.Life;
+            if (GameLogic.EnemyDied > 0)
+            {
+                Score += GameLogic.EnemyDied * 300;
+                GameLogic.EnemyDied=0;
+            }
         }
 
 
@@ -188,6 +206,11 @@ namespace Logic
         {
             return Map.IndexOf(x => x is Player);
         }
+        private void GameOverTrigger()
+        {
+            StopTimers();
+            GameOver = true;
+        }
 
         public void Shoot()
         {
@@ -197,7 +220,7 @@ namespace Logic
                 Map.SpawnSomething(new Mine(X, Y));
                 canShoot = false;
             }
-            
+
         }
     }
 }
