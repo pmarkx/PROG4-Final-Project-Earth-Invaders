@@ -19,15 +19,15 @@ namespace Logic
         public IMap Map { get; set; }
         public TimeSpan GameTickInterval { get; set; }
         public TimeSpan EnemyMovementInterval { get; set; }
-        public TimeSpan PlayerMovementInterval { get; set; }
+        public TimeSpan EnemySpawnInterval { get; set; }
 
 
         private Directions lastMove = Directions.nowhere;
         private DispatcherTimer gameTimer;
         private DispatcherTimer enemyTimer;
-        private DispatcherTimer playerTimer;
+        private DispatcherTimer enemySpawnTimer;
         private bool enemyMoves = false;
-        private bool playerMovesRight = false;
+        private bool enemySpawns = false;
         public event TickHappened GameTickHappened;
 
 
@@ -66,26 +66,46 @@ namespace Logic
         {
             gameTimer = new DispatcherTimer();
             enemyTimer = new DispatcherTimer();
+            enemySpawnTimer = new DispatcherTimer();
             gameTimer.Interval = GameTickInterval;
             enemyTimer.Interval = EnemyMovementInterval;
-            playerTimer.Interval = PlayerMovementInterval;
+            enemySpawnTimer.Interval = EnemySpawnInterval;
             gameTimer.Tick += GameTimer_Tick;
             enemyTimer.Tick += EnemyTimer_Tick;
-            playerTimer.Tick += PlayerTimer_Tick;
-            gameTimer.Start();
-            enemyTimer.Start();
-            playerTimer.Start();
+            enemySpawnTimer.Tick += EnemySpawnTimer_Tick;
+            StartTimers();
         }
 
-        private void PlayerTimer_Tick(object? sender, EventArgs e)
+        private void EnemySpawnTimer_Tick(object? sender, EventArgs e)
         {
-            playerMovesRight = true;
+            enemySpawns = true;
         }
-        public void RefreshPlayerTimer()
+        public void RefreshTimers()
         {
-            playerTimer.Stop();
-            playerTimer.Interval = PlayerMovementInterval;
-            playerTimer.Start();
+            StopTimers();
+            gameTimer.Interval = GameTickInterval;
+            enemyTimer.Interval = EnemyMovementInterval;
+            enemySpawnTimer.Interval = EnemySpawnInterval;
+            StartTimers();
+        }
+
+        private void StopTimers()
+        {
+            gameTimer.Stop();
+            enemyTimer.Stop();
+            enemySpawnTimer.Stop();
+        }
+        private void StartTimers()
+        {
+            gameTimer.Start();
+            enemyTimer.Start();
+            enemySpawnTimer.Start();
+        }
+        //TODO: Create EnumWithActions
+        public void Move(Directions direction)
+        {
+            lastMove = direction;
+
         }
 
         private void EnemyTimer_Tick(object? sender, EventArgs e)
@@ -97,17 +117,17 @@ namespace Logic
         {
             if (enemyMoves)
             {
-                foreach (var item in Map.Where(x=>x is Enemy))
+                foreach (var item in Map)
                 {
                     item.Tick();
                 }
                 enemyMoves = false;
             }
-            if (playerMovesRight)
+            if (enemySpawns)
             {
-                Map.First(x => x is Player).Tick();
+                Map.EnemyRushing();
+                enemySpawns = false;
             }
-
             if (lastMove != Directions.nowhere)
             {
                 DoMove(lastMove);
@@ -118,12 +138,7 @@ namespace Logic
             GameTickHappened?.Invoke();
         }
 
-        //TODO: Create EnumWithActions
-        public void Move(Directions direction)
-        {
-            lastMove = direction;
 
-        }
         private void DoMove(Directions direction)
         {
             ThePlayer.Move(direction);

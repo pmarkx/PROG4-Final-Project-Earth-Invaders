@@ -112,5 +112,10 @@ namespace Logic.Models
         {
             throw new NotImplementedException();
         }
+
+        public void EnemyRushing()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

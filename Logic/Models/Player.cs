@@ -8,12 +8,18 @@ namespace Logic.Models
 {
     public class Player : DynamicObject
     {
+        private bool touchedWithEnemy = false;
         public Player(int xPosition, int yPosition, int life = 1, int ammo = 0) : base(xPosition, yPosition, "P", life, true, ammo)
         {
         }
 
         public override void Tick()
         {
+            if (touchedWithEnemy)
+            {
+                Life--;
+                touchedWithEnemy = false;
+            }
             base.Tick();
         }
         public override void Collided(IEnumerable<GameObject> collidedWith)
@@ -24,7 +30,7 @@ namespace Logic.Models
                 switch (item)
                 {
                     case Enemy e:
-                        Life--;
+                        touchedWithEnemy = true;
                         e.Life--;
                         break;
                     case Wall w:

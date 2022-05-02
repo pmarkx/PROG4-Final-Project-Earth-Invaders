@@ -14,5 +14,6 @@ namespace Logic.Models
         void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer);
         void CheckDie();
         public void CollisionDetect();
+        public void EnemyRushing();
     }
 }

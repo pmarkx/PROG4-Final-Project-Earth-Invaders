@@ -13,6 +13,7 @@ namespace Logic.Models
         private List<GameObject> MapList;
         private int maxX;
         private int maxY;
+        private static Random Rand = new Random();
 
         public MapBackedByList(int indexX, int indexY)
         {
@@ -114,6 +115,12 @@ namespace Logic.Models
                     item.Collided(MapList.Where(x => x.XPosition == item.XPosition && x.YPosition == item.YPosition));
                 }
             }
+        }
+
+        public void EnemyRushing()
+        {
+            Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
+            MapList.Add(enemy);
         }
     }
 }

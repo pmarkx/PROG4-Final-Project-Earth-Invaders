@@ -13,9 +13,9 @@ namespace Logic
 
         TimeSpan GameTickInterval { get; set; }
         TimeSpan EnemyMovementInterval { get; set; }
-        TimeSpan PlayerMovementInterval { get; set; }
+        TimeSpan EnemySpawnInterval { get; set; }
         public event TickHappened GameTickHappened;
-        public void RefreshPlayerTimer();
+        public void RefreshTimers();
         public void StartGame();
     }
 }
