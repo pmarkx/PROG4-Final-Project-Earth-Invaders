@@ -58,6 +58,12 @@ namespace UI.Controller
                 case Key.Space:
                     control.Shoot();
                     break;
+                case Key.F5:
+                    control.Save();
+                    break;
+                case Key.F6:
+                    control.Load();
+                    break;
             }
         }
     }

@@ -31,9 +31,9 @@ namespace Logic
 
         public long Score { get; private set; }
 
-        public long Life { get; private set; }
+        public int Life { get; private set; }
 
-        public long Ammo { get; private set; }
+        public int Ammo { get; private set; }
 
         private Constants.Directions lastMove = Constants.Directions.nowhere;
         private Timer gameTimer;
@@ -66,10 +66,9 @@ namespace Logic
 
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-            Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
-
-            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
+            PopulateScoreAndLife(streamReader);
         }
+        
 
         public void StartGame()
         {
@@ -78,8 +77,8 @@ namespace Logic
             enemySpawnTimer = new Timer();
             bulletMoveTimer = new Timer();
             shootingBetweenTimer = new Timer();
-            lifeSpawnTimer= new Timer();
-            ammoSpawnTimer= new Timer();
+            lifeSpawnTimer = new Timer();
+            ammoSpawnTimer = new Timer();
             gameTimer.Elapsed += GameTimer_Tick;
             enemyTimer.Elapsed += EnemyTimer_Tick;
             enemySpawnTimer.Elapsed += EnemySpawnTimer_Tick;
@@ -91,7 +90,38 @@ namespace Logic
             StartTimers();
         }
 
- 
+        public void Shoot()
+        {
+            if (canShoot && ThePlayer.Ammo >= 1)
+            {
+                ThePlayer.Ammo--;
+                var (X, Y) = (ThePlayer.XPosition, ThePlayer.YPosition - 1);
+                Map.SpawnSomething(new Mine(X, Y));
+                canShoot = false;
+            }
+
+        }
+
+        public void Save()
+        {
+            using StreamWriter streamWriter = new StreamWriter("quicksave.txt");
+            Map.SaveState(streamWriter, this.Score, this.Life);
+
+        }
+        public void Load()
+        {
+            using StreamReader streamReader = new StreamReader("quicksave.txt");
+            Map = new MapBackedByList(streamReader, ThePlayer);
+            GameOver = false;
+            PopulateScoreAndLife(streamReader);
+        }
+
+        private void PopulateScoreAndLife(StreamReader streamReader)
+        {
+            Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
+            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
+            ThePlayer.IsLive = ThePlayer.Life>0;
+        }
         private void LifeSpawnTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             lifeSpawn = true;
@@ -129,8 +159,8 @@ namespace Logic
             enemySpawnTimer.Interval = EnemySpawnInterval.TotalMilliseconds;
             bulletMoveTimer.Interval = BulletMoveInterval.TotalMilliseconds;
             shootingBetweenTimer.Interval = ShootingBetweenInterval.TotalMilliseconds;
-            lifeSpawnTimer.Interval=LifeSpawnInterval.TotalMilliseconds;
-            ammoSpawnTimer.Interval= AmmoSpawnInterval.TotalMilliseconds;
+            lifeSpawnTimer.Interval = LifeSpawnInterval.TotalMilliseconds;
+            ammoSpawnTimer.Interval = AmmoSpawnInterval.TotalMilliseconds;
         }
 
         private void StopTimers()
@@ -206,7 +236,7 @@ namespace Logic
                 }
                 if (ammoSpawn)
                 {
-                    
+
                 }
                 if (lastMove != Constants.Directions.nowhere)
                 {
@@ -245,16 +275,6 @@ namespace Logic
             GameOver = true;
         }
 
-        public void Shoot()
-        {
-            if (canShoot && ThePlayer.Ammo >= 1)
-            {
-                ThePlayer.Ammo--;
-                var (X, Y) = (ThePlayer.XPosition, ThePlayer.YPosition - 1);
-                Map.SpawnSomething(new Mine(X, Y));
-                canShoot = false;
-            }
 
-        }
     }
 }

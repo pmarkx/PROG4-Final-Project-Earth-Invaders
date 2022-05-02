@@ -11,6 +11,10 @@ namespace Logic
     {
         void Move(Constants.Directions direction);
         void Shoot();
+        void Save();
+        void Load();
+
+
 
         TimeSpan GameTickInterval { get; set; }
         TimeSpan EnemyMovementInterval { get; set; }
@@ -21,8 +25,8 @@ namespace Logic
         TimeSpan AmmoSpawnInterval { get; set; }
         public bool GameOver { get; }
         public long Score { get; }
-        public long Life { get; }
-        public long Ammo { get; }
+        public int Life { get; }
+        public int Ammo { get; }
 
         public event TickHappened GameTickHappened;
         public void RefreshTimers();
