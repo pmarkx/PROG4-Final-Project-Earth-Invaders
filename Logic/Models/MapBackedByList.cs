@@ -110,6 +110,9 @@ namespace Logic.Models
                         case 'e':
                             this[i, j] = new Enemy(i, j);
                             break;
+                        case 'l':
+                            this[i, j] = new LifeReward(i, j);
+                            break;
                         case 'p':
                             this[i, j] = thePlayer;
                             break;
@@ -141,6 +144,12 @@ namespace Logic.Models
             Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
             MapList.Add(enemy);
         }
+
+        public void LifeRewardRushing()
+        {
+            LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
+            MapList.Add(lifeReward);
+        }
         public void SpawnSomething(GameObject gameObject)
         {
             MapList.Add(gameObject);
@@ -167,6 +176,9 @@ namespace Logic.Models
                             break;
                         case Mine:
                             line.Append('m');
+                            break;
+                        case LifeReward:
+                            line.Append('l');
                             break;
                         default:
                         case Floor:

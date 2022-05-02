@@ -8,7 +8,7 @@ namespace Logic.Models
         public int YPosition { get; set; }
         public string Name { get; }
         public int Life { get; set; }
-        public bool IsLive { get; protected set; }
+        public bool IsLive { get; set; }
         public bool WeaponOn { get; }
         public int Ammo { get; set; }
         public bool IsSolid { get; protected set; }

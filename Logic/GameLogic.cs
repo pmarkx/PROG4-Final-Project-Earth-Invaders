@@ -47,20 +47,6 @@ namespace Logic
         public static int EnemyDied = 0;
 
 
-        private GameObject ConvertToEnum(char v, int x, int y)
-        {
-            switch (v)
-            {
-                case 'f': return new Floor(x, y);
-                case 'm': return new Mine(x, y);
-                case 'w': return new Wall(x, y);
-                case 'e': return new Enemy(x, y);
-                case 'p': return ThePlayer;
-                default: throw new Exception("unknown character!");
-            }
-        }
-
-        private Queue<string> levels;
 
         static GameLogic()
         {
