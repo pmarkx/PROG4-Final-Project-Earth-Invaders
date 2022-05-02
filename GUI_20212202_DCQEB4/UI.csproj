@@ -40,9 +40,6 @@
     <Content Include="Renderer\images\player.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Renderer\images\player.svg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Renderer\images\wall.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
