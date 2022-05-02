@@ -19,11 +19,15 @@ namespace Logic
         public IMap Map { get; set; }
         public TimeSpan GameTickInterval { get; set; }
         public TimeSpan EnemyMovementInterval { get; set; }
+        public TimeSpan PlayerMovementInterval { get; set; }
+
 
         private Directions lastMove = Directions.nowhere;
         private DispatcherTimer gameTimer;
         private DispatcherTimer enemyTimer;
+        private DispatcherTimer playerTimer;
         private bool enemyMoves = false;
+        private bool playerMovesRight = false;
         public event TickHappened GameTickHappened;
 
 
@@ -64,10 +68,24 @@ namespace Logic
             enemyTimer = new DispatcherTimer();
             gameTimer.Interval = GameTickInterval;
             enemyTimer.Interval = EnemyMovementInterval;
+            playerTimer.Interval = PlayerMovementInterval;
             gameTimer.Tick += GameTimer_Tick;
             enemyTimer.Tick += EnemyTimer_Tick;
+            playerTimer.Tick += PlayerTimer_Tick;
             gameTimer.Start();
             enemyTimer.Start();
+            playerTimer.Start();
+        }
+
+        private void PlayerTimer_Tick(object? sender, EventArgs e)
+        {
+            playerMovesRight = true;
+        }
+        public void RefreshPlayerTimer()
+        {
+            playerTimer.Stop();
+            playerTimer.Interval = PlayerMovementInterval;
+            playerTimer.Start();
         }
 
         private void EnemyTimer_Tick(object? sender, EventArgs e)
@@ -79,12 +97,17 @@ namespace Logic
         {
             if (enemyMoves)
             {
-                foreach (var item in Map)
+                foreach (var item in Map.Where(x=>x is Enemy))
                 {
                     item.Tick();
                 }
                 enemyMoves = false;
             }
+            if (playerMovesRight)
+            {
+                Map.First(x => x is Player).Tick();
+            }
+
             if (lastMove != Directions.nowhere)
             {
                 DoMove(lastMove);

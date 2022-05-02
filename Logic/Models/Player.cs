@@ -34,6 +34,8 @@ namespace Logic.Models
                         break;
                 };
             }
+            if (Life <= 0)
+               IsLive = false;
         }
     }
 }
