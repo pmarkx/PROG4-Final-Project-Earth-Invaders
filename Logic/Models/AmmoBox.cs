@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Logic.Models
 {
-    public class LifeReward : DynamicObject
+    public class AmmoBox : DynamicObject
     {
-        public LifeReward(int xPosition, int yPosition) : base(xPosition, yPosition, "L", 1, false, 0)
+        public AmmoBox(int xPosition, int yPosition) : base(xPosition, yPosition, "A", 1, false, 0)
         {
         }
 
