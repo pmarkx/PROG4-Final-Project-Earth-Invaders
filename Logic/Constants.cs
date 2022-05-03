@@ -21,9 +21,9 @@ namespace Logic
         public static TimeSpan BulletMoveInterval = new TimeSpan(0, 0, 0, 0, 59);
         public static TimeSpan ShootingBetweenInterval = new TimeSpan(0, 0, 0, 1);
         public static TimeSpan LifeSpawnInterval = new TimeSpan(0, 0, 0, 10);
-        public static TimeSpan LifeMoveInterval = new TimeSpan(0, 0, 0, 0, 501);
+        public static TimeSpan LifeMoveInterval = new TimeSpan(0, 0, 0, 0, 59);
         public static TimeSpan AmmoSpawnInterval = new TimeSpan(0, 0, 0, 4);
-        public static TimeSpan AmmoMoveInterval = new TimeSpan(0, 0, 0, 0, 501);
+        public static TimeSpan AmmoMoveInterval = new TimeSpan(0, 0, 0, 0, 101);
 
         public static TimeSpan UIRefreshInterval = new TimeSpan(3);
         public static long DefaultScore = 0;

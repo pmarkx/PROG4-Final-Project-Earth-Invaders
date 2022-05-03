@@ -265,7 +265,7 @@ namespace Logic
                     Map.CollisionDetect();
                     Map.CheckDie();
                 }
-                foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy)))
+                foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy) && !(x is AmmoBox) && !(x is LifeReward)))
                 {
                     item.Tick();
                 }
