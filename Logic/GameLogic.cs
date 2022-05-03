@@ -54,9 +54,9 @@ namespace Logic
         private bool bulletMoves = false;
         private bool canShoot = false;
         private bool lifeSpawn = false;
-        private bool lifeMove=false;
+        private bool lifeMove = false;
         private bool ammoSpawn = false;
-        private bool ammoMove=false;
+        private bool ammoMove = false;
         public event TickHappened GameTickHappened;
         public static int EnemyDied = 0;
 
@@ -72,9 +72,9 @@ namespace Logic
 
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-            PopulateScoreAndLife(streamReader);
+            RepopulateScoreLifeAmmo(streamReader);
         }
-        
+
 
         public void StartGame()
         {
@@ -86,7 +86,7 @@ namespace Logic
             lifeSpawnTimer = new Timer();
             lifeMoveTimer = new Timer();
             ammoSpawnTimer = new Timer();
-            ammmoMoveTimer=new Timer();
+            ammmoMoveTimer = new Timer();
             gameTimer.Elapsed += GameTimer_Tick;
             enemyTimer.Elapsed += EnemyTimer_Tick;
             enemySpawnTimer.Elapsed += EnemySpawnTimer_Tick;
@@ -107,7 +107,7 @@ namespace Logic
 
         private void LifeMoveTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            lifeMove=true;
+            lifeMove = true;
         }
 
         public void Shoot()
@@ -133,14 +133,16 @@ namespace Logic
             using StreamReader streamReader = new StreamReader("quicksave.txt");
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-            PopulateScoreAndLife(streamReader);
+            RepopulateScoreLifeAmmo(streamReader);
         }
 
-        private void PopulateScoreAndLife(StreamReader streamReader)
+        private void RepopulateScoreLifeAmmo(StreamReader streamReader)
         {
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
             ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
-            ThePlayer.IsLive = ThePlayer.Life>0;
+            ThePlayer.Ammo = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultAmmo;
+            ThePlayer.IsLive = ThePlayer.Life > 0;
+
         }
         private void LifeSpawnTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -182,7 +184,7 @@ namespace Logic
             lifeSpawnTimer.Interval = LifeSpawnInterval.TotalMilliseconds;
             ammoSpawnTimer.Interval = AmmoSpawnInterval.TotalMilliseconds;
             ammmoMoveTimer.Interval = AmmoMoveInterval.TotalMilliseconds;
-            lifeMoveTimer.Interval= LifeMoveInterval.TotalMilliseconds;
+            lifeMoveTimer.Interval = LifeMoveInterval.TotalMilliseconds;
         }
 
         private void StopTimers()
@@ -225,71 +227,11 @@ namespace Logic
         {
             lock (Map)
             {
-                if (enemyMoves)
-                {
-                    foreach (var item in Map.Where(x => x is Enemy))
-                    {
-                        item.Tick();
-                    }
-                    enemyMoves = false;
-                    Map.CollisionDetect();
-                    Map.CheckDie();
-                }
-                if (ammoMove)
-                {
-                    foreach (var item in Map.Where(x => x is AmmoBox))
-                    {
-                        item.Tick();
-                    }
-                    ammoMove = false;
-                    Map.CollisionDetect();
-                    Map.CheckDie();
-                }
-                if (lifeMove)
-                {
-                    foreach (var item in Map.Where(x => x is LifeReward))
-                    {
-                        item.Tick();
-                    }
-                    lifeMove = false;
-                    Map.CollisionDetect();
-                    Map.CheckDie();
-                }
-                if (bulletMoves)
-                {
-                    foreach (var item in Map.Where(x => x is Mine))
-                    {
-                        item.Tick();
-                    }
-                    bulletMoves = false;
-                    Map.CollisionDetect();
-                    Map.CheckDie();
-                }
-                foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy) && !(x is AmmoBox) && !(x is LifeReward)))
-                {
-                    item.Tick();
-                }
+                ObjectMove();
+                ObjectSpawn();
 
-                if (enemySpawns)
-                {
-                    Map.EnemyRushing();
-                    enemySpawns = false;
-                }
-                if (lifeSpawn)
-                {
-                    Map.LifeRewardRushing();
-                    lifeSpawn = false;
-                }
-                if (ammoSpawn)
-                {
-                    Map.AmmoRewardRushing();
-                    ammoSpawn = false;
-                }
-                if (lastMove != Constants.Directions.nowhere)
-                {
-                    DoMove(lastMove);
-                    lastMove = Constants.Directions.nowhere;
-                }
+
+
                 if (!ThePlayer.IsLive)
                     GameOverTrigger();
                 Map.CollisionDetect();
@@ -320,6 +262,76 @@ namespace Logic
         {
             StopTimers();
             GameOver = true;
+        }
+        private void ObjectMove()
+        {
+            if (enemyMoves)
+            {
+                foreach (var item in Map.Where(x => x is Enemy))
+                {
+                    item.Tick();
+                }
+                enemyMoves = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            if (ammoMove)
+            {
+                foreach (var item in Map.Where(x => x is AmmoBox))
+                {
+                    item.Tick();
+                }
+                ammoMove = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            if (lifeMove)
+            {
+                foreach (var item in Map.Where(x => x is LifeReward))
+                {
+                    item.Tick();
+                }
+                lifeMove = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            if (bulletMoves)
+            {
+                foreach (var item in Map.Where(x => x is Mine))
+                {
+                    item.Tick();
+                }
+                bulletMoves = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy) && !(x is AmmoBox) && !(x is LifeReward)))
+            {
+                item.Tick();
+            }
+        }
+        private void ObjectSpawn()
+        {
+            if (enemySpawns)
+            {
+                Map.EnemyRushing();
+                enemySpawns = false;
+            }
+            if (lifeSpawn)
+            {
+                Map.LifeRewardRushing();
+                lifeSpawn = false;
+            }
+            if (ammoSpawn)
+            {
+                Map.AmmoRewardRushing();
+                ammoSpawn = false;
+            }
+            if (lastMove != Constants.Directions.nowhere)
+            {
+                DoMove(lastMove);
+                lastMove = Constants.Directions.nowhere;
+            }
         }
 
 
