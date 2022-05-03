@@ -14,8 +14,6 @@ namespace Logic
         void Save();
         void Load();
 
-
-
         TimeSpan GameTickInterval { get; set; }
         TimeSpan EnemyMovementInterval { get; set; }
         TimeSpan EnemySpawnInterval { get; set; }
