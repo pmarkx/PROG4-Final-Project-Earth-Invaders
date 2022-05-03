@@ -24,11 +24,12 @@ namespace GUI_20212202_DCQEB4
     public partial class MainWindow : Window
     {
         GameController controller;
+        GameLogic logic;
         public MainWindow()
         {
             InitializeComponent();
             myMediaElement.Play();
-            GameLogic logic = new GameLogic();
+            logic = new GameLogic();
             display.SetupModel(logic);
             controller = new GameController(logic);
             controller.UITimer.Tick += UITimer_Tick;
@@ -38,12 +39,28 @@ namespace GUI_20212202_DCQEB4
 
         private void UITimer_Tick(object? sender, EventArgs e)
         {
+            if (logic.GameOver)
+            {
+                myMediaElement.Stop();
+                MessageBoxResult result = MessageBox.Show("GAME OVER!\n Retry?", "Game Over", MessageBoxButton.YesNo,MessageBoxImage.Warning);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        new MainWindow().ShowDialog();
+                        this.Close();
+                        break;
+                    case MessageBoxResult.No:
+                        this.Close();
+                        break;
+                }
+            }
             controller.RefreshScoreTable(this.DataContext as MainWindowViewModel);
             display.InvalidateVisual();
 
         }
         private void Controller_GameTickHappened()
         {
+
             display.InvalidateVisual();
 
         }

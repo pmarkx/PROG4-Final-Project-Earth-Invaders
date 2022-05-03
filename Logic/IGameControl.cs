@@ -20,7 +20,9 @@ namespace Logic
         TimeSpan BulletMoveInterval { get; set; }
         TimeSpan ShootingBetweenInterval { get; set; }
         TimeSpan LifeSpawnInterval { get; set; }
+        TimeSpan LifeMoveInterval { get; set; }
         TimeSpan AmmoSpawnInterval { get; set; }
+        TimeSpan AmmoMoveInterval { get; set; }
         public bool GameOver { get; }
         public long Score { get; }
         public int Life { get; }

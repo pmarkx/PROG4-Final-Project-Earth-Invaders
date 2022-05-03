@@ -7,7 +7,7 @@
         xmlns:renderer="clr-namespace:UI.Renderer"
         xmlns:vm="clr-namespace:UI.VM"
         mc:Ignorable="d"
-        Title="MainWindow" WindowState="Maximized" WindowStyle="SingleBorderWindow" Height="450" Width="800" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+        Title="MainWindow" WindowState="Maximized" WindowStyle="None" Height="450" Width="800" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
     <Window.DataContext>
         <vm:MainWindowViewModel/>
     </Window.DataContext>
@@ -27,9 +27,12 @@
                 <ImageBrush ImageSource="/Renderer/images/background.png" Stretch="UniformToFill"/>
             </Grid.Background>
             <renderer:Display x:Name="display" />
-        <Label Content="{Binding ScoreText}" Foreground="White"/>
-        <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="White"/>
-        <Label Grid.Column="2" Content="{Binding AmmoText}" Foreground="White"/>
+        <Image Grid.Column="0" Source="/Renderer/images/score.png" HorizontalAlignment="Left"/>
+        <Image Grid.Column="1" Source="/Renderer/images/Health.png" HorizontalAlignment="Left"/>
+        <Image Grid.Column="2" Source="/Renderer/images/ammo.png" HorizontalAlignment="Left"/>
+        <Label Content="{Binding ScoreText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Grid.Column="2" Content="{Binding AmmoText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <MediaElement Source="./Renderer/images/music.mp3" Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"/>
     </Grid>
 </Window>

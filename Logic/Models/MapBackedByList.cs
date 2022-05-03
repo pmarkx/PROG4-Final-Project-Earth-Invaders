@@ -161,8 +161,8 @@ namespace Logic.Models
         {
             lock (this)
             {
-                LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
-                MapList.Add(lifeReward);
+                AmmoBox ammoBox = new(Rand.Next(1, maxX), maxY);
+                MapList.Add(ammoBox);
             }
         }
         public void SpawnSomething(GameObject gameObject)

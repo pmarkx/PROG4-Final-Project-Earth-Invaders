@@ -12,7 +12,7 @@ namespace Logic.Models
         {
         }
 
-        public override int Priority => 0;
+        public override int Priority => 1;
 
         public override void Collided(IEnumerable<GameObject> collidedWith)
         {

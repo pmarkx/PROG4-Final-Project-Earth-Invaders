@@ -10,7 +10,7 @@ namespace Logic.Models
     {
         private bool touchedWithEnemy = false;
 
-        public override int Priority => 2;
+        public override int Priority => 3;
 
         public Player(int xPosition, int yPosition, int life = 1, int ammo = 0) : base(xPosition, yPosition, "P", life, true, ammo)
         {
@@ -40,10 +40,12 @@ namespace Logic.Models
                         Life = 0;
                         break;
                     case LifeReward l:
+                        l.IsLive = false;
                         Life++;
                         break;
-                    case AmmoBox:
-                        Ammo++;
+                    case AmmoBox a:
+                        a.IsLive = false;
+                        Ammo += 5;
                         break;
                     default:
                         break;

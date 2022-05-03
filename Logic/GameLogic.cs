@@ -26,6 +26,8 @@ namespace Logic
         public TimeSpan LifeSpawnInterval { get; set; }
         public TimeSpan AmmoSpawnInterval { get; set; }
 
+        public TimeSpan LifeMoveInterval { get; set; }
+        public TimeSpan AmmoMoveInterval { get; set; }
 
         public bool GameOver { get; private set; }
 
@@ -42,7 +44,9 @@ namespace Logic
         private Timer bulletMoveTimer;
         private Timer shootingBetweenTimer;
         private Timer lifeSpawnTimer;
+        private Timer lifeMoveTimer;
         private Timer ammoSpawnTimer;
+        private Timer ammmoMoveTimer;
 
 
         private bool enemyMoves = false;
@@ -50,7 +54,9 @@ namespace Logic
         private bool bulletMoves = false;
         private bool canShoot = false;
         private bool lifeSpawn = false;
+        private bool lifeMove = false;
         private bool ammoSpawn = false;
+        private bool ammoMove = false;
         public event TickHappened GameTickHappened;
         public static int EnemyDied = 0;
 
@@ -66,9 +72,9 @@ namespace Logic
 
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-            PopulateScoreAndLife(streamReader);
+            RepopulateScoreLifeAmmo(streamReader);
         }
-        
+
 
         public void StartGame()
         {
@@ -78,16 +84,30 @@ namespace Logic
             bulletMoveTimer = new Timer();
             shootingBetweenTimer = new Timer();
             lifeSpawnTimer = new Timer();
+            lifeMoveTimer = new Timer();
             ammoSpawnTimer = new Timer();
+            ammmoMoveTimer = new Timer();
             gameTimer.Elapsed += GameTimer_Tick;
             enemyTimer.Elapsed += EnemyTimer_Tick;
             enemySpawnTimer.Elapsed += EnemySpawnTimer_Tick;
             bulletMoveTimer.Elapsed += BulletMoveTimer_Tick;
             shootingBetweenTimer.Elapsed += ShootingBetweenTimer_Tick;
             lifeSpawnTimer.Elapsed += LifeSpawnTimer_Elapsed;
+            lifeMoveTimer.Elapsed += LifeMoveTimer_Elapsed;
             ammoSpawnTimer.Elapsed += AmmoSpawnTimer_Elapsed;
+            ammmoMoveTimer.Elapsed += AmmmoMoveTimer_Elapsed;
             CopyTimerIntervals();
             StartTimers();
+        }
+
+        private void AmmmoMoveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            ammoMove = true;
+        }
+
+        private void LifeMoveTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            lifeMove = true;
         }
 
         public void Shoot()
@@ -113,14 +133,16 @@ namespace Logic
             using StreamReader streamReader = new StreamReader("quicksave.txt");
             Map = new MapBackedByList(streamReader, ThePlayer);
             GameOver = false;
-            PopulateScoreAndLife(streamReader);
+            RepopulateScoreLifeAmmo(streamReader);
         }
 
-        private void PopulateScoreAndLife(StreamReader streamReader)
+        private void RepopulateScoreLifeAmmo(StreamReader streamReader)
         {
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
             ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
-            ThePlayer.IsLive = ThePlayer.Life>0;
+            ThePlayer.Ammo = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultAmmo;
+            ThePlayer.IsLive = ThePlayer.Life > 0;
+
         }
         private void LifeSpawnTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
@@ -161,6 +183,8 @@ namespace Logic
             shootingBetweenTimer.Interval = ShootingBetweenInterval.TotalMilliseconds;
             lifeSpawnTimer.Interval = LifeSpawnInterval.TotalMilliseconds;
             ammoSpawnTimer.Interval = AmmoSpawnInterval.TotalMilliseconds;
+            ammmoMoveTimer.Interval = AmmoMoveInterval.TotalMilliseconds;
+            lifeMoveTimer.Interval = LifeMoveInterval.TotalMilliseconds;
         }
 
         private void StopTimers()
@@ -172,6 +196,8 @@ namespace Logic
             shootingBetweenTimer.Stop();
             lifeSpawnTimer.Stop();
             ammoSpawnTimer.Stop();
+            ammmoMoveTimer.Stop();
+            lifeMoveTimer.Stop();
         }
         private void StartTimers()
         {
@@ -182,6 +208,8 @@ namespace Logic
             shootingBetweenTimer.Start();
             lifeSpawnTimer.Start();
             ammoSpawnTimer.Start();
+            ammmoMoveTimer.Start();
+            lifeMoveTimer.Start();
         }
         //TODO: Create EnumWithActions
         public void Move(Constants.Directions direction)
@@ -199,56 +227,17 @@ namespace Logic
         {
             lock (Map)
             {
-                if (enemyMoves)
-                {
-                    foreach (var item in Map.Where(x => x is Enemy))
-                    {
-                        item.Tick();
-                    }
-                    enemyMoves = false;
-                    Map.CollisionDetect();
-                    Map.CheckDie();
-                }
-                if (bulletMoves)
-                {
-                    foreach (var item in Map.Where(x => x is Mine))
-                    {
-                        item.Tick();
-                    }
-                    bulletMoves = false;
-                    Map.CollisionDetect();
-                    Map.CheckDie();
-                }
-                foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy)))
-                {
-                    item.Tick();
-                }
+                ObjectMove();
+                ObjectSpawn();
 
-                if (enemySpawns)
-                {
-                    Map.EnemyRushing();
-                    enemySpawns = false;
-                }
-                if (lifeSpawn)
-                {
-                    Map.LifeRewardRushing();
-                    lifeSpawn = false;
-                }
-                if (ammoSpawn)
-                {
 
-                }
-                if (lastMove != Constants.Directions.nowhere)
-                {
-                    DoMove(lastMove);
-                    lastMove = Constants.Directions.nowhere;
-                }
+
                 if (!ThePlayer.IsLive)
                     GameOverTrigger();
                 Map.CollisionDetect();
                 Map.CheckDie();
                 GameTickHappened?.Invoke();
-                Score += 10;
+                Score += 1;
                 Life = ThePlayer.Life;
                 Ammo = ThePlayer.Ammo;
                 if (GameLogic.EnemyDied > 0)
@@ -273,6 +262,76 @@ namespace Logic
         {
             StopTimers();
             GameOver = true;
+        }
+        private void ObjectMove()
+        {
+            if (enemyMoves)
+            {
+                foreach (var item in Map.Where(x => x is Enemy))
+                {
+                    item.Tick();
+                }
+                enemyMoves = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            if (ammoMove)
+            {
+                foreach (var item in Map.Where(x => x is AmmoBox))
+                {
+                    item.Tick();
+                }
+                ammoMove = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            if (lifeMove)
+            {
+                foreach (var item in Map.Where(x => x is LifeReward))
+                {
+                    item.Tick();
+                }
+                lifeMove = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            if (bulletMoves)
+            {
+                foreach (var item in Map.Where(x => x is Mine))
+                {
+                    item.Tick();
+                }
+                bulletMoves = false;
+                Map.CollisionDetect();
+                Map.CheckDie();
+            }
+            foreach (var item in Map.Where(x => !(x is Mine) && !(x is Enemy) && !(x is AmmoBox) && !(x is LifeReward)))
+            {
+                item.Tick();
+            }
+        }
+        private void ObjectSpawn()
+        {
+            if (enemySpawns)
+            {
+                Map.EnemyRushing();
+                enemySpawns = false;
+            }
+            if (lifeSpawn)
+            {
+                Map.LifeRewardRushing();
+                lifeSpawn = false;
+            }
+            if (ammoSpawn)
+            {
+                Map.AmmoRewardRushing();
+                ammoSpawn = false;
+            }
+            if (lastMove != Constants.Directions.nowhere)
+            {
+                DoMove(lastMove);
+                lastMove = Constants.Directions.nowhere;
+            }
         }
 
 
