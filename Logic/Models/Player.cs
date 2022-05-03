@@ -40,10 +40,12 @@ namespace Logic.Models
                         Life = 0;
                         break;
                     case LifeReward l:
+                        l.IsLive = false;
                         Life++;
                         break;
-                    case AmmoBox:
-                        Ammo++;
+                    case AmmoBox a:
+                        a.IsLive = false;
+                        Ammo += 5;
                         break;
                     default:
                         break;

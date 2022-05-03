@@ -295,7 +295,7 @@ namespace Logic
                 Map.CollisionDetect();
                 Map.CheckDie();
                 GameTickHappened?.Invoke();
-                Score += 10;
+                Score += 1;
                 Life = ThePlayer.Life;
                 Ammo = ThePlayer.Ammo;
                 if (GameLogic.EnemyDied > 0)
