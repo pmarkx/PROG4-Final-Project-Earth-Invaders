@@ -10,7 +10,7 @@ namespace Logic.Models
     {
         private bool touchedWithEnemy = false;
 
-        public override int Priority => 2;
+        public override int Priority => 3;
 
         public Player(int xPosition, int yPosition, int life = 1, int ammo = 0) : base(xPosition, yPosition, "P", life, true, ammo)
         {

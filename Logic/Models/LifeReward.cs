@@ -12,7 +12,7 @@ namespace Logic.Models
         {
         }
 
-        public override int Priority => 1;
+        public override int Priority => 2;
 
         public override void Tick()
         {

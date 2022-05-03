@@ -13,6 +13,6 @@ namespace Logic.Models
             IsSolid = true;
         }
 
-        public override int Priority => 3;
+        public override int Priority => 4;
     }
 }

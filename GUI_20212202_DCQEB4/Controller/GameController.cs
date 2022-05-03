@@ -28,6 +28,8 @@ namespace UI.Controller
             control.ShootingBetweenInterval = Constants.ShootingBetweenInterval;
             control.LifeSpawnInterval = Constants.LifeSpawnInterval;
             control.AmmoSpawnInterval = Constants.AmmoSpawnInterval;
+            control.AmmoMoveInterval = Constants.AmmoMoveInterval;
+            control.LifeMoveInterval = Constants.LifeMoveInterval;
             control.GameTickHappened += Control_GameTickHappened;
             UITimer = new DispatcherTimer();
             UITimer.Interval = Constants.UIRefreshInterval;
