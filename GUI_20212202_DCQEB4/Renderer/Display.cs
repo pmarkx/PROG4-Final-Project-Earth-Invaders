@@ -73,7 +73,7 @@ namespace UI.Renderer
                                 break;
                             case AmmoBox:
                                 brush = new ImageBrush
-                                    (BitmapFrame.Create(File.OpenRead(folder + "mine.bmp")));
+                                    (BitmapFrame.Create(File.OpenRead(folder + "ammobox.png")));
                                 break;
                             default:
                                 break;
