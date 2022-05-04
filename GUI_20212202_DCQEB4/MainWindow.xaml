@@ -4,9 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GUI_20212202_DCQEB4"
+        xmlns:renderer="clr-namespace:UI.Renderer"
+        xmlns:vm="clr-namespace:UI.VM"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" WindowState="Maximized" WindowStyle="None" Height="450" Width="800" KeyDown="Window_KeyDown" SizeChanged="Window_SizeChanged" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
+    <Grid x:Name="grid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.1*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition/>
 
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+                <ImageBrush ImageSource="/Renderer/images/background.png" Stretch="UniformToFill"/>
+            </Grid.Background>
+            <renderer:Display x:Name="display" />
+        <Image Grid.Column="0" Source="/Renderer/images/score.png" HorizontalAlignment="Left"/>
+        <Image Grid.Column="1" Source="/Renderer/images/Health.png" HorizontalAlignment="Left"/>
+        <Image Grid.Column="2" Source="/Renderer/images/ammo.png" HorizontalAlignment="Left"/>
+        <Label Content="{Binding ScoreText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <Label Grid.Column="2" Content="{Binding AmmoText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <MediaElement Source="./Renderer/images/music.mp3" Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"/>
     </Grid>
 </Window>

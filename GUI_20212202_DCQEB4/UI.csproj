@@ -7,4 +7,73 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Sprites\**" />
+    <EmbeddedResource Remove="Sprites\**" />
+    <None Remove="Sprites\**" />
+    <Page Remove="Sprites\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Renderer\images\ammo.png" />
+    <None Remove="Renderer\images\ammobox.png" />
+    <None Remove="Renderer\images\background.png" />
+    <None Remove="Renderer\images\enemy.png" />
+    <None Remove="Renderer\images\Health.png" />
+    <None Remove="Renderer\images\lifereward.png" />
+    <None Remove="Renderer\images\mine.bmp" />
+    <None Remove="Renderer\images\mine.png" />
+    <None Remove="Renderer\images\music.mp3" />
+    <None Remove="Renderer\images\player.png" />
+    <None Remove="Renderer\images\player.svg" />
+    <None Remove="Renderer\images\score.png" />
+    <None Remove="Renderer\images\wall.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Renderer\images\ammo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\ammobox.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\background.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\enemy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\Health.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\lifereward.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\mine.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\music.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\player.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\score.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\wall.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <ProjectReference Include="..\Logic\Logic.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Logic\Logic.csproj" />
+  </ItemGroup>
+
 </Project>
