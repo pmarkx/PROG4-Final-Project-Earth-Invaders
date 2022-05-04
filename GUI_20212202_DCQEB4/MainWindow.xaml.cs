@@ -45,7 +45,7 @@ namespace GUI_20212202_DCQEB4
             if (logic.GameOver)
             {
                 myMediaElement.Stop();
-                MessageBoxResult result = MessageBox.Show("GAME OVER!\n Retry?", "Game Over", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("GAME OVER!\nRetry?", "Game Over", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -58,12 +58,12 @@ namespace GUI_20212202_DCQEB4
                 }
             }
         }
-        private void Controller_GameTickHappened()
-        {
+        //private void Controller_GameTickHappened()
+        //{
 
-            display.InvalidateVisual();
+        //    display.InvalidateVisual();
 
-        }
+        //}
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
