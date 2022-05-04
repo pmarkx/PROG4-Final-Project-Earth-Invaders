@@ -232,8 +232,7 @@ namespace Logic
 
 
 
-                if (!ThePlayer.IsLive)
-                    GameOverTrigger();
+
                 Map.CollisionDetect();
                 Map.CheckDie();
                 GameTickHappened?.Invoke();
@@ -245,6 +244,8 @@ namespace Logic
                     Score += GameLogic.EnemyDied * 300;
                     GameLogic.EnemyDied = 0;
                 }
+                if (!ThePlayer.IsLive)
+                    GameOverTrigger();
             }
         }
 

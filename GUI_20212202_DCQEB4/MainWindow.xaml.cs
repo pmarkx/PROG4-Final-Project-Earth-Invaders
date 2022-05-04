@@ -39,10 +39,13 @@ namespace GUI_20212202_DCQEB4
 
         private void UITimer_Tick(object? sender, EventArgs e)
         {
+            
+            controller.RefreshScoreTable(this.DataContext as MainWindowViewModel);
+            display.InvalidateVisual();
             if (logic.GameOver)
             {
                 myMediaElement.Stop();
-                MessageBoxResult result = MessageBox.Show("GAME OVER!\n Retry?", "Game Over", MessageBoxButton.YesNo,MessageBoxImage.Warning);
+                MessageBoxResult result = MessageBox.Show("GAME OVER!\n Retry?", "Game Over", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -54,9 +57,6 @@ namespace GUI_20212202_DCQEB4
                         break;
                 }
             }
-            controller.RefreshScoreTable(this.DataContext as MainWindowViewModel);
-            display.InvalidateVisual();
-
         }
         private void Controller_GameTickHappened()
         {
