@@ -2,145 +2,217 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Logic.Models
 {
     public class Map : IMap
     {
+        private List<GameObject> MapList;
+        private int maxX;
+        private int maxY;
+        private static Random Rand = new Random();
+
         public Map(int indexX, int indexY)
         {
-            MapArray = new GameObject[indexX, indexY];
+            maxX = indexX;
+            maxY = indexY;
+            MapList = new List<GameObject>();
         }
 
-        private GameObject[,] MapArray { get; set; }
-
-        public IEnumerator<GameObject> GetEnumerator()
+        public Map(StreamReader streamReader, Player player)
         {
-            for (int i = 0; i < MapArray.GetLength(0); i++)
+            var (MapsizeX, MapsizeY) = streamReader.ReadLine().Split(",") switch
             {
-                for (int j = 0; j < MapArray.GetLength(1); j++)
-                {
-                    yield return MapArray[i, j];
-                }
-            }
-        }
+                var a => (int.Parse(a[0]), int.Parse(a[1])),
+            };
+            maxX = MapsizeX;
+            maxY = MapsizeY;
+            MapList = new List<GameObject>();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            PopulateMapFromStreamReader(streamReader, player);
         }
-
         public GameObject this[int index1, int index2]
         {
             get
             {
-                return MapArray[index1, index2];
+                lock (this)
+                {
+                    var moreThanOneQuery = MapList.Where(x => x.XPosition == index1 && x.YPosition == index2);
+                    if (moreThanOneQuery.Count() > 1)
+                    {
+                        return moreThanOneQuery.OrderByDescending(x => x.Priority).First();
+                    }
+                    else
+                        return MapList.FirstOrDefault(x => x.XPosition == index1 && x.YPosition == index2) ?? new Floor(index1, index2);
+                }
             }
             set
             {
-                MapArray[index1, index2] = value;
+                value.XPosition = index1;
+                value.YPosition = index2;
+                MapList.Add(value);
             }
+        }
+
+        public void CheckDie()
+        {
+            lock (this)
+                for (int i = 0; i < MapList.Count; i++)
+                {
+                    if (!MapList[i].IsLive)
+                        MapList.Remove(MapList[i]);
+                }
+        }
+
+        public IEnumerator<GameObject> GetEnumerator()
+        {
+            return MapList.GetEnumerator();
         }
 
         public int GetLength(int dimension)
         {
-            return MapArray.GetLength(dimension);
+            return dimension switch
+            {
+                0 => maxX,
+                1 => maxY,
+                _ => 0
+            };
         }
 
         public (int X, int Y) IndexOf(Func<GameObject, bool> condition)
         {
-            for (int i = 0; i < GetLength(0); i++)
+            foreach (var item in MapList)
             {
-                for (int j = 0; j < GetLength(1); j++)
-                {
-                    if (condition(this[i, j]))
-                    {
-                        return (i, j);
-                    }
-                }
+                if (condition(item))
+                    return (item.XPosition, item.YPosition);
             }
             return (-1, -1);
         }
 
         public void PopulateMapFromStreamReader(StreamReader streamReader, Player thePlayer)
         {
-            if (!streamReader.EndOfStream)
+
+            for (int i = 0; i < GetLength(0); i++)
             {
-                for (int i = 0; i < GetLength(0); i++)
+                string line = streamReader.ReadLine();
+                for (int j = 0; j < GetLength(1); j++)
                 {
-                    string line = streamReader.ReadLine();
-                    for (int j = 0; j < GetLength(1); j++)
+                    switch (line[j])
                     {
-                        switch (line[j])
-                        {
-                            case 'f':
-                                this[i, j] = new Floor(i, j);
-                                break;
-                            case 'm':
-                                //this[i, j] = new Mine(i, j);
-                                break;
-                            case 'w':
-                                this[i, j] = new Wall(i, j);
-                                break;
-                            case 'e':
-                                this[i, j] = new Enemy(i, j);
-                                break;
-                            case 'p':
-                                this[i, j] = thePlayer;
-                                break;
-                        }
+                        case 'm':
+                            this[i, j] = new Mine(i, j);
+                            break;
+                        case 'w':
+                            this[i, j] = new Wall(i, j);
+                            break;
+                        case 'e':
+                            this[i, j] = new Enemy(i, j);
+                            break;
+                        case 'l':
+                            this[i, j] = new LifeReward(i, j);
+                            break;
+                        case 'p':
+                            this[i, j] = thePlayer;
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
         }
 
-        public void CheckDie()
+        IEnumerator IEnumerable.GetEnumerator()
         {
-            for (int i = 0; i < GetLength(0); i++)
-            {
-                for (int j = 0; j < GetLength(1); j++)
-                {
-                    if (this[i, j].IsLive==false)
-                    {
-                        this[i, j] = new Floor(i, j);
-                    }
-                }
-            }
+            return this.GetEnumerator();
         }
 
         public void CollisionDetect()
         {
-            throw new NotImplementedException();
+            foreach (var item in MapList)
+            {
+                if (MapList.Count(x => x.XPosition == item.XPosition && x.YPosition == item.YPosition) > 1)
+                {
+                    item.Collided(MapList.Where(x => x.XPosition == item.XPosition && x.YPosition == item.YPosition));
+                }
+            }
         }
 
         public void EnemyRushing()
         {
-            throw new NotImplementedException();
-        }
-
-        public void SpawnSomething(GameObject gameObject)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveState(StreamWriter streamWriter)
-        {
-            throw new NotImplementedException();
+            lock (this)
+            {
+                Enemy enemy = new Enemy(Rand.Next(1, maxX), maxY);
+                MapList.Add(enemy);
+            }
         }
 
         public void LifeRewardRushing()
         {
-            throw new NotImplementedException();
+            lock (this)
+            {
+                LifeReward lifeReward = new(Rand.Next(1, maxX), maxY);
+                MapList.Add(lifeReward);
+            }
         }
-
         public void AmmoRewardRushing()
         {
-            throw new NotImplementedException();
+            lock (this)
+            {
+                AmmoBox ammoBox = new(Rand.Next(1, maxX), maxY);
+                MapList.Add(ammoBox);
+            }
         }
+        public void SpawnSomething(GameObject gameObject)
+        {
+            lock (this)
+                MapList.Add(gameObject);
+        }
+
+        public void SaveState(StreamWriter streamWriter)
+        {
+            streamWriter.WriteLine($"{GetLength(0)},{GetLength(1)}");
+            for (int i = 0; i < GetLength(0); i++)
+            {
+                StringBuilder line = new StringBuilder();
+                for (int j = 0; j < GetLength(1); j++)
+                {
+                    switch (this[i, j])
+                    {
+                        case Enemy:
+                            line.Append('e');
+                            break;
+                        case Wall:
+                            line.Append('w');
+                            break;
+                        case Player:
+                            line.Append('p');
+                            break;
+                        case Mine:
+                            line.Append('m');
+                            break;
+                        case LifeReward:
+                            line.Append('l');
+                            break;
+                        default:
+                        case Floor:
+                            line.Append('f');
+                            break;
+                    }
+                }
+                streamWriter.WriteLine(line.ToString());
+            }
+            
+        }
+        public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
+        {
+            this.SaveState(streamWriter);
+            streamWriter.WriteLine(Score);
+            streamWriter.WriteLine(Lifes);
+        }
+
+
     }
 }
