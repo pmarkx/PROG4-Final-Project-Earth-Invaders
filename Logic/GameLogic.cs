@@ -70,7 +70,7 @@ namespace Logic
         {
             using StreamReader streamReader = new StreamReader("startMap.txt");
 
-            Map = new MapBackedByList(streamReader, ThePlayer);
+            Map = new Map(streamReader, ThePlayer);
             GameOver = false;
             RepopulateScoreLifeAmmo(streamReader);
         }
@@ -131,7 +131,7 @@ namespace Logic
         public void Load()
         {
             using StreamReader streamReader = new StreamReader("quicksave.txt");
-            Map = new MapBackedByList(streamReader, ThePlayer);
+            Map = new Map(streamReader, ThePlayer);
             GameOver = false;
             RepopulateScoreLifeAmmo(streamReader);
         }
