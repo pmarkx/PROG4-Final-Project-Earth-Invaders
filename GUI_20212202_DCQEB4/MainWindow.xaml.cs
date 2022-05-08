@@ -42,6 +42,14 @@ namespace GUI_20212202_DCQEB4
             
             controller.RefreshScoreTable(this.DataContext as MainWindowViewModel);
             display.InvalidateVisual();
+            if (logic.IsPause)
+            {
+                myMediaElement.Pause();
+            }
+            else
+            {
+                myMediaElement.Play();
+            }
             if (logic.GameOver)
             {
                 myMediaElement.Stop();

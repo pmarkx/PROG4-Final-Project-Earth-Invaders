@@ -66,6 +66,12 @@ namespace UI.Controller
                 case Key.F6:
                     control.Load();
                     break;
+                case Key.P:
+                    control.Pause();
+                    break;
+                case Key.Escape:
+                    control.GameOver = true;
+                    break;
             }
         }
     }

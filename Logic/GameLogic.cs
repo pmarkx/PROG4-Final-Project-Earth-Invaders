@@ -29,13 +29,14 @@ namespace Logic
         public TimeSpan LifeMoveInterval { get; set; }
         public TimeSpan AmmoMoveInterval { get; set; }
 
-        public bool GameOver { get; private set; }
+        public bool GameOver { get; set; }
 
         public long Score { get; private set; }
 
         public int Life { get; private set; }
 
         public int Ammo { get; private set; }
+        public bool IsPause { get; set; }
 
         private Constants.Directions lastMove = Constants.Directions.nowhere;
         private Timer gameTimer;
@@ -72,6 +73,7 @@ namespace Logic
 
             Map = new Map(streamReader, ThePlayer);
             GameOver = false;
+            IsPause = false;
             RepopulateScoreLifeAmmo(streamReader);
         }
 
@@ -335,6 +337,18 @@ namespace Logic
             }
         }
 
-
+        public void Pause()
+        {
+            if (IsPause)
+            {
+                IsPause = false;
+                gameTimer.Start();
+            }
+            else
+            {
+                IsPause=true;
+                gameTimer.Stop();
+            }
+        }
     }
 }
