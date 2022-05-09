@@ -18,12 +18,16 @@
     <None Remove="Renderer\images\ammo.png" />
     <None Remove="Renderer\images\ammobox.png" />
     <None Remove="Renderer\images\background.png" />
+    <None Remove="Renderer\images\bg45.png" />
     <None Remove="Renderer\images\enemy.png" />
+    <None Remove="Renderer\images\gif3.gif" />
     <None Remove="Renderer\images\Health.png" />
     <None Remove="Renderer\images\lifereward.png" />
+    <None Remove="Renderer\images\menumusic.mp3" />
     <None Remove="Renderer\images\mine.bmp" />
     <None Remove="Renderer\images\mine.png" />
     <None Remove="Renderer\images\music.mp3" />
+    <None Remove="Renderer\images\pause.png" />
     <None Remove="Renderer\images\player.png" />
     <None Remove="Renderer\images\player.svg" />
     <None Remove="Renderer\images\score.png" />
@@ -40,6 +44,9 @@
     <Content Include="Renderer\images\background.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Renderer\images\bg45.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Renderer\images\enemy.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -49,10 +56,16 @@
     <Content Include="Renderer\images\lifereward.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Renderer\images\menumusic.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Renderer\images\mine.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Renderer\images\music.mp3">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Renderer\images\pause.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Renderer\images\player.png">

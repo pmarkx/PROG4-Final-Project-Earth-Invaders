@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UI;
 using UI.Controller;
 using UI.VM;
 
@@ -45,9 +46,11 @@ namespace GUI_20212202_DCQEB4
             if (logic.IsPause)
             {
                 myMediaElement.Pause();
+                PauseImage.Visibility = Visibility.Visible;
             }
             else
             {
+                PauseImage.Visibility = Visibility.Hidden;
                 myMediaElement.Play();
             }
             if (logic.GameOver)
@@ -61,10 +64,13 @@ namespace GUI_20212202_DCQEB4
                         this.Close();
                         break;
                     case MessageBoxResult.No:
+                        new MenuWindow().ShowDialog();
                         this.Close();
                         break;
                 }
+                controller.UITimer.Stop();
             }
+
         }
         //private void Controller_GameTickHappened()
         //{
