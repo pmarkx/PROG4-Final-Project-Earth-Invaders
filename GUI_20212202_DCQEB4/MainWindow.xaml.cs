@@ -40,7 +40,6 @@ namespace GUI_20212202_DCQEB4
 
         private void UITimer_Tick(object? sender, EventArgs e)
         {
-            
             controller.RefreshScoreTable(this.DataContext as MainWindowViewModel);
             display.InvalidateVisual();
             if (logic.IsPause)
@@ -55,7 +54,9 @@ namespace GUI_20212202_DCQEB4
             }
             if (logic.GameOver)
             {
+                controller.UITimer.Stop();
                 myMediaElement.Stop();
+                new WindowScore().ShowDialog();
                 MessageBoxResult result = MessageBox.Show("GAME OVER!\nRetry?", "Game Over", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 switch (result)
                 {
@@ -68,7 +69,6 @@ namespace GUI_20212202_DCQEB4
                         this.Close();
                         break;
                 }
-                controller.UITimer.Stop();
             }
 
         }

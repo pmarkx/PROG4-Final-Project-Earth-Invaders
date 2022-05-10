@@ -37,6 +37,8 @@ namespace UI.Controller
         }
         public void RefreshScoreTable(MainWindowViewModel vm)
         {
+            vm.CurrentScore = control.Score;
+            ;
             vm.ScoreText = $"Score: {control.Score}";
             vm.LifeText = control.Life==1 ? $"Life: {control.Life}" : $"Lives: { control.Life}";
             vm.AmmoText = $"Ammo: {control.Ammo}";
