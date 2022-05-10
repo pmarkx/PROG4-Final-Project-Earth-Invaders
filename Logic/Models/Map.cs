@@ -206,10 +206,11 @@ namespace Logic.Models
             }
             
         }
-        public void SaveState(StreamWriter streamWriter, long Score, int Lifes)
+        public void SaveState(StreamWriter streamWriter, long Score, int Ammos, int Lifes)
         {
             this.SaveState(streamWriter);
             streamWriter.WriteLine(Score);
+            streamWriter.WriteLine(Ammos);
             streamWriter.WriteLine(Lifes);
         }
 

@@ -127,7 +127,7 @@ namespace Logic
         public void Save()
         {
             using StreamWriter streamWriter = new StreamWriter("quicksave.txt");
-            Map.SaveState(streamWriter, this.Score, this.Life);
+            Map.SaveState(streamWriter, this.Score, this.Ammo, this.Life);
 
         }
         public void Load()
@@ -141,8 +141,8 @@ namespace Logic
         private void RepopulateScoreLifeAmmo(StreamReader streamReader)
         {
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
-            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
             ThePlayer.Ammo = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultAmmo;
+            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
             ThePlayer.IsLive = ThePlayer.Life > 0;
 
         }

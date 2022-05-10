@@ -18,7 +18,7 @@ namespace Logic.Models
         void LifeRewardRushing();
         void AmmoRewardRushing();
         void SpawnSomething(GameObject gameObject);
-        void SaveState(StreamWriter streamWriter, long Score, int Lifes);
+        void SaveState(StreamWriter streamWriter, long Score, int Ammos, int Lifes);
         void SaveState(StreamWriter streamWriter);
     }
 }
