@@ -29,13 +29,14 @@ namespace Logic
         public TimeSpan LifeMoveInterval { get; set; }
         public TimeSpan AmmoMoveInterval { get; set; }
 
-        public bool GameOver { get; private set; }
+        public bool GameOver { get; set; }
 
         public long Score { get; private set; }
 
         public int Life { get; private set; }
 
         public int Ammo { get; private set; }
+        public bool IsPause { get; set; }
 
         private Constants.Directions lastMove = Constants.Directions.nowhere;
         private Timer gameTimer;
@@ -70,8 +71,9 @@ namespace Logic
         {
             using StreamReader streamReader = new StreamReader("startMap.txt");
 
-            Map = new MapBackedByList(streamReader, ThePlayer);
+            Map = new Map(streamReader, ThePlayer);
             GameOver = false;
+            IsPause = false;
             RepopulateScoreLifeAmmo(streamReader);
         }
 
@@ -125,13 +127,13 @@ namespace Logic
         public void Save()
         {
             using StreamWriter streamWriter = new StreamWriter("quicksave.txt");
-            Map.SaveState(streamWriter, this.Score, this.Life);
+            Map.SaveState(streamWriter, this.Score, this.Ammo, this.Life);
 
         }
         public void Load()
         {
             using StreamReader streamReader = new StreamReader("quicksave.txt");
-            Map = new MapBackedByList(streamReader, ThePlayer);
+            Map = new Map(streamReader, ThePlayer);
             GameOver = false;
             RepopulateScoreLifeAmmo(streamReader);
         }
@@ -139,8 +141,8 @@ namespace Logic
         private void RepopulateScoreLifeAmmo(StreamReader streamReader)
         {
             Score = !streamReader.EndOfStream ? long.Parse(streamReader.ReadLine()) : Constants.DefaultScore;
-            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
             ThePlayer.Ammo = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultAmmo;
+            ThePlayer.Life = !streamReader.EndOfStream ? int.Parse(streamReader.ReadLine()) : Constants.DefaultLifes;
             ThePlayer.IsLive = ThePlayer.Life > 0;
 
         }
@@ -335,6 +337,18 @@ namespace Logic
             }
         }
 
-
+        public void Pause()
+        {
+            if (IsPause)
+            {
+                IsPause = false;
+                gameTimer.Start();
+            }
+            else
+            {
+                IsPause=true;
+                gameTimer.Stop();
+            }
+        }
     }
 }

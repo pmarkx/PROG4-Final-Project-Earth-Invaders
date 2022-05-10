@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Logic.Models.AmmoBox">
+    <Position X="7.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\AmmoBox.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.DynamicObject">
+    <Position X="7.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\DynamicObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.Enemy">
+    <Position X="10.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\Enemy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.Floor">
+    <Position X="12.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Floor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.GameObject">
+    <Position X="8.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ICAAAAAAAIBAAAQEAAAAAAQABAgAAgAAAAAAAAABQAA=</HashCode>
+      <FileName>Models\GameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.LifeReward">
+    <Position X="9" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\LifeReward.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.Mine">
+    <Position X="14" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEAAAAAAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\Mine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.Player">
+    <Position X="5.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQEAAAAAAAAAAAAIAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Models\Player.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.Wall">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\Wall.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Logic.Models.Map" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kkAAAAgAEAAAABAADBAAAAAAAAAgAAAEAAAAADCAEgA=</HashCode>
+      <FileName>Models\Map.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Interface Name="Logic.Models.IMap">
+    <Position X="4.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EkAAAAgAEAAAABAADBAAAAAAAAAgAAAAAAAAAAAAEgA=</HashCode>
+      <FileName>Models\IMap.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

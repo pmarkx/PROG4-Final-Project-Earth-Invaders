@@ -37,8 +37,10 @@ namespace UI.Controller
         }
         public void RefreshScoreTable(MainWindowViewModel vm)
         {
+            vm.CurrentScore = control.Score;
+            ;
             vm.ScoreText = $"Score: {control.Score}";
-            vm.LifeText = $"Lifes: {control.Life}";
+            vm.LifeText = control.Life==1 ? $"Life: {control.Life}" : $"Lives: { control.Life}";
             vm.AmmoText = $"Ammo: {control.Ammo}";
         }
 
@@ -65,6 +67,12 @@ namespace UI.Controller
                     break;
                 case Key.F6:
                     control.Load();
+                    break;
+                case Key.P:
+                    control.Pause();
+                    break;
+                case Key.Escape:
+                    control.GameOver = true;
                     break;
             }
         }

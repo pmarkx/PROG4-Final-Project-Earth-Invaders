@@ -1,0 +1,42 @@
+﻿<Window x:Class="UI.MenuWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UI"
+        mc:Ignorable="d"
+        Title="MenuWindow" Height="450" Width="800" WindowState="Maximized" WindowStyle="None">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Renderer/images/bg45.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+        <Label Grid.Column="1" Grid.Row="0" Content="Earth Invaiders" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontSize="60" FontWeight="Bold">
+            <Label.Foreground>
+                <RadialGradientBrush>
+                    <GradientStop Color="#FF7A2B2B" Offset="0.387"/>
+                    <GradientStop Color="#FF842929" Offset="0.128"/>
+                </RadialGradientBrush>
+            </Label.Foreground>
+            <Label.BitmapEffect>
+                <DropShadowBitmapEffect Color="Black" Direction="320" ShadowDepth="10" Opacity=".5" Softness="9" />
+            </Label.BitmapEffect>
+        </Label>
+        <StackPanel Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" MaxWidth="400">
+            <Button Margin="20" Height="60" Content="Play" FontSize="40" FontWeight="Bold" FontFamily="Bahnschrift Light" Click="OnClickPlay"/>
+            <Button Margin="20" Height="60" Content="Credits" FontSize="40" FontWeight="Bold" FontFamily="Bahnschrift Light" Click="OnClickCredits"/>
+            <Button Margin="20" Height="60" Content="Help" FontSize="40" FontWeight="Bold" FontFamily="Bahnschrift Light" Click="OnClickHelp"/>
+            <Button Margin="20" Height="60" Content="Exit" FontSize="40" FontWeight="Bold" FontFamily="Bahnschrift Light" Click="OnClickExit"/>
+            <MediaElement Source="./Renderer/images/menumusic.mp3" x:Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"/>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -13,6 +13,7 @@ namespace Logic
         void Shoot();
         void Save();
         void Load();
+        void Pause();
 
         TimeSpan GameTickInterval { get; set; }
         TimeSpan EnemyMovementInterval { get; set; }
@@ -23,7 +24,8 @@ namespace Logic
         TimeSpan LifeMoveInterval { get; set; }
         TimeSpan AmmoSpawnInterval { get; set; }
         TimeSpan AmmoMoveInterval { get; set; }
-        public bool GameOver { get; }
+        public bool GameOver { get; set; }
+        public bool IsPause { get; set; }
         public long Score { get; }
         public int Life { get; }
         public int Ammo { get; }

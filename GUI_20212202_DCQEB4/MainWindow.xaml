@@ -15,24 +15,27 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.1*"/>
             <RowDefinition/>
+            <RowDefinition Height="0.1*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="0.3*"/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="0.3*"/>
 
         </Grid.ColumnDefinitions>
         <Grid.Background>
-                <ImageBrush ImageSource="/Renderer/images/background.png" Stretch="UniformToFill"/>
-            </Grid.Background>
-            <renderer:Display x:Name="display" />
+            <ImageBrush ImageSource="/Renderer/images/background.png" Stretch="UniformToFill"/>
+        </Grid.Background>
+        <renderer:Display x:Name="display" />
         <Image Grid.Column="0" Source="/Renderer/images/score.png" HorizontalAlignment="Left"/>
         <Image Grid.Column="1" Source="/Renderer/images/Health.png" HorizontalAlignment="Left"/>
         <Image Grid.Column="2" Source="/Renderer/images/ammo.png" HorizontalAlignment="Left"/>
         <Label Content="{Binding ScoreText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Label Grid.Column="1" Content="{Binding LifeText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         <Label Grid.Column="2" Content="{Binding AmmoText}" Foreground="AntiqueWhite" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <MediaElement Source="./Renderer/images/music.mp3" Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"/>
+        <MediaElement Source="./Renderer/images/music.mp3" x:Name="myMediaElement" LoadedBehavior="Manual" Visibility="Hidden" Volume="100"/>
+        <Image x:Name="PauseImage" Visibility="Hidden" Source="/Renderer/images/pause.png" Grid.Column="3" Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Height="355" Width="244"/>
     </Grid>
 </Window>
