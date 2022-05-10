@@ -56,7 +56,7 @@ namespace GUI_20212202_DCQEB4
             {
                 controller.UITimer.Stop();
                 myMediaElement.Stop();
-                new WindowScore().ShowDialog();
+                new WindowScore(this.DataContext as MainWindowViewModel).ShowDialog();
                 MessageBoxResult result = MessageBox.Show("GAME OVER!\nRetry?", "Game Over", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 switch (result)
                 {

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.IO;
+using UI.VM;
 
 namespace UI
 {
@@ -24,12 +25,17 @@ namespace UI
         {
             InitializeComponent();
         }
+        public WindowScore(MainWindowViewModel vm) : this()
+        {
+            this.DataContext = vm;
+        }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            StreamWriter streamWriter=new StreamWriter("scores.txt",true);
-            string asd = name.Text + " " + score.Content.ToString();
-            streamWriter.WriteLine(name.Text+" "+score.Content.ToString());
+            var vm = this.DataContext as MainWindowViewModel;
+            StreamWriter streamWriter = new StreamWriter("scores.txt", true);
+            string asd = name.Text + " " + vm.CurrentScore.ToString();
+            streamWriter.WriteLine(name.Text + " " + vm.CurrentScore.ToString());
             streamWriter.Close();
             Close();
         }
